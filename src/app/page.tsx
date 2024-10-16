@@ -1,9 +1,9 @@
-import { VscodeClone } from "@/components/vscode-clone";
+import { VscodeClone } from '@/components/vscode-clone';
 
 export default function Home() {
   return (
     <div className="">
-        <VscodeClone />
+      <VscodeClone />
     </div>
   );
 }
