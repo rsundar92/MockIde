@@ -1,0 +1,17 @@
+{
+    "status": "SUCCESS",
+    "message": "Git branches fetched successfully",
+    "data": {
+      "currentBranch": "dev",
+      "localBranches": [
+        "dev",
+        "main",
+        "testing"
+      ],
+      "remoteBranches": [
+        "origin/dev",
+        "origin/main",
+        "origin/testing"
+      ]
+    }
+  }
