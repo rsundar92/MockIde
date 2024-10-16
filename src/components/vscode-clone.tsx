@@ -3,35 +3,14 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import { ChevronDown, ChevronRight, File, Folder, GitBranch } from 'lucide-react'
-
-import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
+import { initialFileSystem } from './initialFileSystem'
 
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), { 
   ssr: false,
   loading: () => <p>Loading editor...</p>
 })
-
-// Mock file system
-const initialFileSystem = {
-  'src': {
-    'pages': {
-      'api': {
-        'hello.ts': 'export default function handler(req, res) {\n  res.status(200).json({ name: "John Doe" })\n}',
-      },
-      'index.tsx': 'export default function Home() {\n  return <h1>Welcome to Next.js!</h1>\n}',
-      '_app.tsx': 'import "../styles/globals.css"\n\nexport default function App({ Component, pageProps }) {\n  return <Component {...pageProps} />\n}',
-    },
-    'styles': {
-      'globals.css': 'body {\n  font-family: sans-serif;\n}',
-    },
-  },
-  'public': {
-    'favicon.ico': '[Binary content]',
-  },
-  'package.json': '{\n  "name": "my-nextjs-app",\n  "version": "0.1.0",\n  "private": true\n}',
-}
 
 const branches = ['main', 'develop', 'feature/new-ui']
 
@@ -67,45 +46,106 @@ export function VscodeClone() {
     })
   }, [])
 
-  const renderTree = useCallback((obj: any, path: string = '') => {
-    return Object.entries(obj).map(([key, value]) => {
-      const currentPath = `${path}${key}`
-      if (typeof value === 'object') {
+  
+
+  // const renderTree = useCallback((files: any[], depth = 0) => {
+  //   const currentLevelFiles = files.filter(file => file.depth === depth)
+  
+  //   return currentLevelFiles.map(file => {
+  //     const hasChildren = files.some(f => f.relativePath.startsWith(`${file.relativePath}/`) && f.depth === depth + 1)
+  
+  //     if (file.pathType === 'directory') {
+  //       return (
+  //         <div key={file.relativePath}>
+  //           <div
+  //             className="flex items-center cursor-pointer hover:bg-gray-100 py-1"
+  //             onClick={() => toggleFolder(file.relativePath)}
+  //           >
+  //             {expandedFolders.includes(file.relativePath) ? (
+  //               <ChevronDown className="w-4 h-4 mr-1" />
+  //             ) : (
+  //               <ChevronRight className="w-4 h-4 mr-1" />
+  //             )}
+  //             <Folder className="w-4 h-4 mr-2" />
+  //             {file.name}
+  //           </div>
+  //           {expandedFolders.includes(file.relativePath) && hasChildren && (
+  //             <div className="ml-4">{renderTree(files, depth + 1)}</div>
+  //           )}
+  //         </div>
+  //       )
+  //     } else if (file.pathType === 'file') {
+  //       return (
+  //         <div
+  //           key={file.relativePath}
+  //           className={`flex items-center cursor-pointer hover:bg-gray-100 py-1 ${
+  //             selectedFile === file.relativePath ? 'bg-blue-100' : ''
+  //           }`}
+  //           onClick={() => selectFile(file.relativePath, file.content || '')}
+  //         >
+  //           <File className="w-4 h-4 mr-2" />
+  //           {file.name}
+  //         </div>
+  //       )
+  //     }
+  
+  //     return null
+  //   })
+  // }, [expandedFolders, selectedFile, toggleFolder, selectFile])
+
+  const renderTree = useCallback((files: any[], depth = 0, parentPath = '') => {
+    const currentLevelFiles = files.filter(file => {
+      const isDirectChild = file.relativePath.startsWith(parentPath) &&
+        file.depth === depth && 
+        !file.relativePath.slice(parentPath.length + 1).includes('/'); // Ensure no deeper subdirectory
+      return isDirectChild;
+    });
+  
+    return currentLevelFiles.map(file => {
+      const hasChildren = files.some(f => 
+        f.relativePath.startsWith(`${file.relativePath}/`) && 
+        f.depth === depth + 1
+      );
+  
+      if (file.pathType === 'directory') {
         return (
-          <div key={currentPath}>
+          <div key={file.relativePath}>
             <div
               className="flex items-center cursor-pointer hover:bg-gray-100 py-1"
-              onClick={() => toggleFolder(currentPath)}
+              onClick={() => toggleFolder(file.relativePath)}
             >
-              {expandedFolders.includes(currentPath) ? (
+              {expandedFolders.includes(file.relativePath) ? (
                 <ChevronDown className="w-4 h-4 mr-1" />
               ) : (
                 <ChevronRight className="w-4 h-4 mr-1" />
               )}
               <Folder className="w-4 h-4 mr-2" />
-              {key}
+              {file.name}
             </div>
-            {expandedFolders.includes(currentPath) && (
-              <div className="ml-4">Render tree 2{renderTree(value, `${currentPath}/`)}</div>
+            {expandedFolders.includes(file.relativePath) && hasChildren && (
+              <div className="ml-4">{renderTree(files, depth + 1, file.relativePath)}</div>
             )}
           </div>
-        )
-      } else {
+        );
+      } else if (file.pathType === 'file') {
         return (
           <div
-            key={currentPath}
+            key={file.relativePath}
             className={`flex items-center cursor-pointer hover:bg-gray-100 py-1 ${
-              selectedFile === currentPath ? 'bg-blue-100' : ''
+              selectedFile === file.relativePath ? 'bg-blue-100' : ''
             }`}
-            onClick={() => selectFile(currentPath, value as string)}
+            onClick={() => selectFile(file.relativePath, file.content || '')}
           >
             <File className="w-4 h-4 mr-2" />
-            {key}
+            {file.name}
           </div>
-        )
+        );
       }
-    })
-  }, [expandedFolders, selectedFile, toggleFolder, selectFile])
+  
+      return null;
+    });
+  }, [expandedFolders, selectedFile, toggleFolder, selectFile]);
+  
 
   const handleEditorChange = useCallback((value: string | undefined) => {
     if (value !== undefined && selectedFile) {
@@ -165,7 +205,7 @@ export function VscodeClone() {
       </div>
       <div className="flex flex-1 overflow-hidden">
         <div className="w-64 border-r border-gray-200 overflow-auto">
-          <div className="p-4">Render tree {renderTree(fileSystem)}</div>
+          <div className="p-4">{renderTree(fileSystem.files)}</div>
         </div>
         <div className="flex-1">
           {selectedFile ? (
