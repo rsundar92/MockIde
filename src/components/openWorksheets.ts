@@ -1,4 +1,4 @@
-{
+export const Worksheets = {
   "activeWorksheets": [
     {
       "relativePath": "DBT_TEST/dbt_project.yml",

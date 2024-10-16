@@ -6,6 +6,7 @@ import { ChevronDown, ChevronRight, File, Folder, GitBranch } from 'lucide-react
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { initialFileSystem } from './initialFileSystem'
+import { Worksheets } from './openWorksheets'
 
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), { 
   ssr: false,
@@ -16,6 +17,7 @@ const branches = ['main', 'develop', 'feature/new-ui']
 
 export function VscodeClone() {
   const [fileSystem, setFileSystem] = useState(initialFileSystem)
+  const [openWorksheets, setOpenWorkSheets] = useState(Worksheets.activeWorksheets);
   const [selectedFile, setSelectedFile] = useState('')
   const [fileContent, setFileContent] = useState('')
   const [expandedFolders, setExpandedFolders] = useState<string[]>([])
@@ -28,9 +30,10 @@ export function VscodeClone() {
     )
   }, [])
 
-  const selectFile = useCallback((path: string, content: string) => {
+  const selectFile = useCallback((path: string, content) => {
+    const worksheet = openWorksheets.find((worksheet) => worksheet.relativePath === path)
     setSelectedFile(path)
-    setFileContent(content)
+    setFileContent(worksheet?.content || worksheet?.editorContent || worksheet?.modifiedContent || content)
   }, [])
 
   const updateFileSystem = useCallback((path: string, content: string) => {
@@ -45,53 +48,6 @@ export function VscodeClone() {
       return newFileSystem
     })
   }, [])
-
-  
-
-  // const renderTree = useCallback((files: any[], depth = 0) => {
-  //   const currentLevelFiles = files.filter(file => file.depth === depth)
-  
-  //   return currentLevelFiles.map(file => {
-  //     const hasChildren = files.some(f => f.relativePath.startsWith(`${file.relativePath}/`) && f.depth === depth + 1)
-  
-  //     if (file.pathType === 'directory') {
-  //       return (
-  //         <div key={file.relativePath}>
-  //           <div
-  //             className="flex items-center cursor-pointer hover:bg-gray-100 py-1"
-  //             onClick={() => toggleFolder(file.relativePath)}
-  //           >
-  //             {expandedFolders.includes(file.relativePath) ? (
-  //               <ChevronDown className="w-4 h-4 mr-1" />
-  //             ) : (
-  //               <ChevronRight className="w-4 h-4 mr-1" />
-  //             )}
-  //             <Folder className="w-4 h-4 mr-2" />
-  //             {file.name}
-  //           </div>
-  //           {expandedFolders.includes(file.relativePath) && hasChildren && (
-  //             <div className="ml-4">{renderTree(files, depth + 1)}</div>
-  //           )}
-  //         </div>
-  //       )
-  //     } else if (file.pathType === 'file') {
-  //       return (
-  //         <div
-  //           key={file.relativePath}
-  //           className={`flex items-center cursor-pointer hover:bg-gray-100 py-1 ${
-  //             selectedFile === file.relativePath ? 'bg-blue-100' : ''
-  //           }`}
-  //           onClick={() => selectFile(file.relativePath, file.content || '')}
-  //         >
-  //           <File className="w-4 h-4 mr-2" />
-  //           {file.name}
-  //         </div>
-  //       )
-  //     }
-  
-  //     return null
-  //   })
-  // }, [expandedFolders, selectedFile, toggleFolder, selectFile])
 
   const renderTree = useCallback((files: any[], depth = 0, parentPath = '') => {
     const currentLevelFiles = files.filter(file => {
@@ -134,7 +90,7 @@ export function VscodeClone() {
             className={`flex items-center cursor-pointer hover:bg-gray-100 py-1 ${
               selectedFile === file.relativePath ? 'bg-blue-100' : ''
             }`}
-            onClick={() => selectFile(file.relativePath, file.content || '')}
+            onClick={() => selectFile(file.relativePath, file.name || '')}
           >
             <File className="w-4 h-4 mr-2" />
             {file.name}
