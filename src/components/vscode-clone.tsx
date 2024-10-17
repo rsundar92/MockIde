@@ -16,9 +16,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { initialFileSystem } from './initialFileSystem';
 import { Worksheets } from './openWorksheets';
+import axios from 'axios';
 
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
   ssr: false,
@@ -27,8 +26,8 @@ const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
 
 const branches = ['main', 'develop', 'feature/new-ui'];
 
-export function VscodeClone() {
-  const [fileSystem, setFileSystem] = useState(initialFileSystem);
+export function MockIDE() {
+  const [fileSystem, setFileSystem] = useState([]);
   const [openWorksheets, setOpenWorkSheets] = useState(
     Worksheets.activeWorksheets
   );
@@ -36,7 +35,26 @@ export function VscodeClone() {
   const [fileContent, setFileContent] = useState('');
   const [expandedFolders, setExpandedFolders] = useState<string[]>([]);
   const [currentBranch, setCurrentBranch] = useState('main');
-  const [localPath, setLocalPath] = useState('/path/to/your/project');
+  const [isLoadingFiles, setLoadingFiles] = useState(false);
+  const [error, setError] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoadingFiles(true);
+      try {
+        const response = await axios.get('/list-files.json');
+        setTimeout(() => {
+          setFileSystem(response?.data?.data);
+        }, 1500)
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoadingFiles(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const toggleFolder = useCallback((path: string) => {
     setExpandedFolders((prev) =>
@@ -72,6 +90,7 @@ export function VscodeClone() {
 
   const renderTree = useCallback(
     (files: any[], depth = 0, parentPath = '') => {
+      if (!files) return;
       const currentLevelFiles = files.filter((file) => {
         const isDirectChild =
           file.relativePath.startsWith(parentPath) &&
@@ -140,39 +159,9 @@ export function VscodeClone() {
     [selectedFile, updateFileSystem]
   );
 
-  const getLanguage = useCallback((fileName: string) => {
-    const extension = fileName.split('.').pop()?.toLowerCase();
-    switch (extension) {
-      case 'js':
-      case 'jsx':
-      case 'ts':
-      case 'tsx':
-        return 'typescript';
-      case 'css':
-        return 'css';
-      case 'json':
-        return 'json';
-      default:
-        return 'plaintext';
-    }
-  }, []);
-
-  useEffect(() => {
-    // Mock loading files from local path
-    console.log(`Loading files from: ${localPath}`);
-    // In a real implementation, you would load files from the local path here
-  }, [localPath]);
-
   return (
     <div className="flex flex-col h-screen bg-white">
       <div className="p-4 border-b border-gray-200">
-        <Input
-          type="text"
-          value={localPath}
-          onChange={(e) => setLocalPath(e.target.value)}
-          placeholder="Enter local path"
-          className="mb-2"
-        />
         <Select value={currentBranch} onValueChange={setCurrentBranch}>
           <SelectTrigger className="w-full">
             <SelectValue />
@@ -197,11 +186,10 @@ export function VscodeClone() {
           {selectedFile ? (
             <MonacoEditor
               height="100%"
-              language={getLanguage(selectedFile)}
               theme="vs-dark"
               value={fileContent}
               options={{
-                minimap: { enabled: false },
+                minimap: { enabled: true },
                 scrollBeyondLastLine: false,
                 fontSize: 14,
                 automaticLayout: true,
