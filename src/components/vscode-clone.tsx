@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import {
   ChevronDown,
@@ -16,8 +16,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useFileSystem } from '@/context/FileSystemContext';
 import { Worksheets } from './openWorksheets';
-import axios from 'axios';
 import { FileSystemItem } from '@/types/type';
 
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
@@ -28,7 +28,7 @@ const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
 const branches = ['main', 'develop', 'feature/new-ui'];
 
 export function MockIDE() {
-  const [fileSystem, setFileSystem] = useState<{ files: FileSystemItem[] }>({ files: [] });
+  const { fileSystem, isLoadingFiles, error, updateFileSystem } = useFileSystem();
   const [openWorksheets, setOpenWorkSheets] = useState(
     Worksheets.activeWorksheets
   );
@@ -36,26 +36,6 @@ export function MockIDE() {
   const [fileContent, setFileContent] = useState('');
   const [expandedFolders, setExpandedFolders] = useState<string[]>([]);
   const [currentBranch, setCurrentBranch] = useState('main');
-  const [isLoadingFiles, setLoadingFiles] = useState(false);
-  const [error, setError] = useState({});
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoadingFiles(true);
-      try {
-        const response = await axios.get('/list-files.json');
-        setTimeout(() => {
-          setFileSystem(response?.data?.data);
-        }, 500)
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoadingFiles(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const toggleFolder = useCallback((path: string) => {
     setExpandedFolders((prev) =>
@@ -74,19 +54,6 @@ export function MockIDE() {
         worksheet?.modifiedContent ||
         content
     );
-  }, []);
-
-  const updateFileSystem = useCallback((path: string, content: string) => {
-    setFileSystem((prevFileSystem) => {
-      const newFileSystem = { ...prevFileSystem };
-      const pathParts = path.split('/');
-      let current = newFileSystem;
-      for (let i = 0; i < pathParts.length - 1; i++) {
-        current = current[pathParts[i]];
-      }
-      current[pathParts[pathParts.length - 1]] = content;
-      return newFileSystem;
-    });
   }, []);
 
   const renderTree = useCallback(
@@ -154,11 +121,19 @@ export function MockIDE() {
     (value: string | undefined) => {
       if (value !== undefined && selectedFile) {
         setFileContent(value);
-        updateFileSystem(selectedFile, value);
+        updateFileSystem(selectedFile, value); // Use updateFileSystem from context
       }
     },
     [selectedFile, updateFileSystem]
   );
+
+  if (isLoadingFiles) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading files!</div>;
+  }
 
   return (
     <div className="flex flex-col h-screen bg-white">
