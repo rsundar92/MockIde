@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/select';
 import { Worksheets } from './openWorksheets';
 import axios from 'axios';
+import { FileSystemItem } from '@/types/type';
 
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
   ssr: false,
@@ -27,7 +28,7 @@ const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
 const branches = ['main', 'develop', 'feature/new-ui'];
 
 export function MockIDE() {
-  const [fileSystem, setFileSystem] = useState([]);
+  const [fileSystem, setFileSystem] = useState<{ files: FileSystemItem[] }>({ files: [] });
   const [openWorksheets, setOpenWorkSheets] = useState(
     Worksheets.activeWorksheets
   );
@@ -45,7 +46,7 @@ export function MockIDE() {
         const response = await axios.get('/list-files.json');
         setTimeout(() => {
           setFileSystem(response?.data?.data);
-        }, 1500)
+        }, 500)
       } catch (error) {
         setError(error);
       } finally {
@@ -62,7 +63,7 @@ export function MockIDE() {
     );
   }, []);
 
-  const selectFile = useCallback((path: string, content) => {
+  const selectFile = useCallback((path: string, content: string) => {
     const worksheet = openWorksheets.find(
       (worksheet) => worksheet.relativePath === path
     );
@@ -89,9 +90,9 @@ export function MockIDE() {
   }, []);
 
   const renderTree = useCallback(
-    (files: any[], depth = 0, parentPath = '') => {
+    (files: FileSystemItem[], depth = 0, parentPath = '') => {
       if (!files) return;
-      const currentLevelFiles = files.filter((file) => {
+      const currentLevelFiles = files.filter((file: FileSystemItem) => {
         const isDirectChild =
           file.relativePath.startsWith(parentPath) &&
           file.depth === depth &&
@@ -99,9 +100,9 @@ export function MockIDE() {
         return isDirectChild;
       });
 
-      return currentLevelFiles.map((file) => {
-        const hasChildren = files.some(
-          (f) =>
+      return currentLevelFiles.map((file: FileSystemItem) => {
+        const hasChildren = files?.some(
+          (f: FileSystemItem) =>
             f.relativePath.startsWith(`${file.relativePath}/`) &&
             f.depth === depth + 1
         );
