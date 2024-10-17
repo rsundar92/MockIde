@@ -1,14 +1,10 @@
 {
   "extends": [
     "next/core-web-vitals",
-    "next/typescript",
-    "plugin:prettier/recommended"
+    "next/typescript"
   ],
   "plugins": ["prettier", "@typescript-eslint"],
   "rules": {
-    // Prettier integration
-    "prettier/prettier": "error",
-
     // Best Practices
     "eqeqeq": ["error", "always"],               // Enforce strict equality
     "curly": ["error", "all"],                   // Always use curly braces for block statements
@@ -29,11 +25,6 @@
     "react/jsx-key": "error",                    // Ensure keys for dynamic lists
 
     // Next.js specific rules
-    "@next/next/no-img-element": "off",          // Disable for custom <img> usage
-
-    // TypeScript specific rules
-    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }], // Allow unused function args starting with _
-    "@typescript-eslint/no-explicit-any": "warn",     // Warn on using 'any', to encourage better types
-    "@typescript-eslint/explicit-module-boundary-types": "off", // Disable forcing return type on functions
+    "@next/next/no-img-element": "off"
   }
 }

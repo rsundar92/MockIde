@@ -2,23 +2,10 @@
 
 import React, { useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import {
-  ChevronDown,
-  ChevronRight,
-  File,
-  Folder,
-  GitBranch,
-} from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useFileSystem } from '@/context/FileSystemContext';
 import { Worksheets } from './openWorksheets';
-import type { FileSystemItem } from '@/types/type';
+import TreeView from './TreeView';
 
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
   ssr: false,
@@ -28,11 +15,8 @@ const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
 const branches = ['main', 'develop', 'feature/new-ui'];
 
 export function MockIDE() {
-  const { fileSystem, isLoadingFiles, error, updateFileSystem } =
-    useFileSystem();
-  const [openWorksheets, setOpenWorkSheets] = useState(
-    Worksheets.activeWorksheets
-  );
+  const { fileSystem, isLoadingFiles, error, updateFileSystem } = useFileSystem();
+  const [openWorksheets, setOpenWorkSheets] = useState(Worksheets.activeWorksheets);
   const [selectedFile, setSelectedFile] = useState('');
   const [fileContent, setFileContent] = useState('');
   const [expandedFolders, setExpandedFolders] = useState<string[]>([]);
@@ -50,81 +34,15 @@ export function MockIDE() {
     );
     setSelectedFile(path);
     setFileContent(
-      worksheet?.content ||
-        worksheet?.editorContent ||
-        worksheet?.modifiedContent ||
-        content
+      worksheet?.content || worksheet?.editorContent || worksheet?.modifiedContent || content
     );
-  }, []);
-
-  const renderTree = useCallback(
-    (files: FileSystemItem[], depth = 0, parentPath = '') => {
-      if (!files) {
-        return;
-      }
-      const currentLevelFiles = files.filter((file: FileSystemItem) => {
-        const isDirectChild =
-          file.relativePath.startsWith(parentPath) &&
-          file.depth === depth &&
-          !file.relativePath.slice(parentPath.length + 1).includes('/'); // Ensure no deeper subdirectory
-        return isDirectChild;
-      });
-
-      return currentLevelFiles.map((file: FileSystemItem) => {
-        const hasChildren = files?.some(
-          (f: FileSystemItem) =>
-            f.relativePath.startsWith(`${file.relativePath}/`) &&
-            f.depth === depth + 1
-        );
-
-        if (file.pathType === 'directory') {
-          return (
-            <div key={file.relativePath}>
-              <div
-                className="flex items-center cursor-pointer hover:bg-gray-100 py-1"
-                onClick={() => toggleFolder(file.relativePath)}
-              >
-                {expandedFolders.includes(file.relativePath) ? (
-                  <ChevronDown className="w-4 h-4 mr-1" />
-                ) : (
-                  <ChevronRight className="w-4 h-4 mr-1" />
-                )}
-                <Folder className="w-4 h-4 mr-2" />
-                {file.name}
-              </div>
-              {expandedFolders.includes(file.relativePath) && hasChildren && (
-                <div className="ml-4">
-                  {renderTree(files, depth + 1, file.relativePath)}
-                </div>
-              )}
-            </div>
-          );
-        } else if (file.pathType === 'file') {
-          return (
-            <div
-              key={file.relativePath}
-              className={`flex items-center cursor-pointer hover:bg-gray-100 py-1 ${
-                selectedFile === file.relativePath ? 'bg-blue-100' : ''
-              }`}
-              onClick={() => selectFile(file.relativePath, file.name || '')}
-            >
-              <File className="w-4 h-4 mr-2" />
-              {file.name}
-            </div>
-          );
-        }
-
-        return null;
-      });
-    },
-    [expandedFolders, selectedFile, toggleFolder, selectFile]
-  );
+  }, [openWorksheets]);
 
   const handleEditorChange = useCallback(
     (value: string | undefined) => {
       if (value !== undefined && selectedFile) {
         setFileContent(value);
-        updateFileSystem(selectedFile, value); // Use updateFileSystem from context
+        updateFileSystem(selectedFile, value);
       }
     },
     [selectedFile, updateFileSystem]
@@ -148,10 +66,7 @@ export function MockIDE() {
           <SelectContent>
             {branches.map((branch) => (
               <SelectItem key={branch} value={branch}>
-                <div className="flex items-center">
-                  <GitBranch className="w-4 h-4 mr-2" />
-                  {branch}
-                </div>
+                {branch}
               </SelectItem>
             ))}
           </SelectContent>
@@ -159,7 +74,15 @@ export function MockIDE() {
       </div>
       <div className="flex flex-1 overflow-hidden">
         <div className="w-64 border-r border-gray-200 overflow-auto">
-          <div className="p-4">{renderTree(fileSystem.files)}</div>
+          <div className="p-4">
+            <TreeView
+              files={fileSystem.files}
+              expandedFolders={expandedFolders}
+              toggleFolder={toggleFolder}
+              selectedFile={selectedFile}
+              selectFile={selectFile}
+            />
+          </div>
         </div>
         <div className="flex-1">
           {selectedFile ? (
