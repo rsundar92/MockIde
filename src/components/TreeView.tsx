@@ -33,10 +33,8 @@ const TreeView: React.FC<TreeViewProps> = ({
       });
 
       return currentLevelFiles.map((file: FileSystemItem) => {
-        const hasChildren = files.some(
-          (f: FileSystemItem) =>
-            f.relativePath.startsWith(`${file.relativePath}/`) &&
-            f.depth === depth + 1
+        const hasChildren = files.some((f: FileSystemItem) =>
+          f.relativePath.startsWith(`${file.relativePath}/`) && f.depth === depth + 1
         );
 
         if (file.pathType === 'directory') {

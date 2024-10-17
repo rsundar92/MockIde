@@ -1,5 +1,6 @@
 'use client';
 
+import { Worksheet } from '@/types/type';
 import dynamic from 'next/dynamic';
 import { useCallback } from 'react';
 
@@ -8,12 +9,15 @@ const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
   loading: () => <p>Loading editor...</p>,
 });
 
-interface MonacoEditorProps {
+type MonacoEditorProps = {
   value: string;
   onChange: (value: string | undefined) => void;
+  selectedFile: string;
+  openworksheets: Worksheet[];
 }
 
-const MonacoEditorComponent: React.FC<MonacoEditorProps> = ({ value, onChange }) => {
+const MonacoEditorComponent: React.FC<MonacoEditorProps> = ({ value, onChange, selectedFile, openworksheets }) => {
+  const currentWorksheet = openworksheets.find((worksheet) => worksheet.relativePath === selectedFile);
   const handleEditorChange = useCallback(
     (newValue: string | undefined) => {
       onChange(newValue);
