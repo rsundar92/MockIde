@@ -37,7 +37,8 @@ export function MockIDE() {
     (value: string | undefined) => {
       if (value !== undefined && selectedFile) {
         setFileContent(value);
-        updateFileSystem(selectedFile, value);
+        // updateFileSystem(selectedFile, value);
+        updateFileSystem();
       }
     },
     [selectedFile, updateFileSystem]

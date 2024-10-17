@@ -7,7 +7,7 @@ import type { FileSystemItem } from '@/types/type';
 type FileSystemContextType = {
   fileSystem: { files: FileSystemItem[] };
   isLoadingFiles: boolean;
-  error: Error;
+  error: Error | string | null;
   fetchFileSystem: () => void;
   updateFileSystem: () => void;
 };
@@ -31,7 +31,7 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
       const response = await axios.get('/list-files.json');
       setFileSystem(response?.data?.data);
     } catch (error) {
-      setError(error);
+      setError(error as unknown as Error | null | string);
     } finally {
       setLoadingFiles(false);
     }

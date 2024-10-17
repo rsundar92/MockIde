@@ -18,6 +18,7 @@ type MonacoEditorProps = {
 
 const MonacoEditorComponent: React.FC<MonacoEditorProps> = ({ value, onChange, selectedFile, openworksheets }) => {
   const currentWorksheet = openworksheets.find((worksheet) => worksheet.relativePath === selectedFile);
+  console.log(currentWorksheet);
   const handleEditorChange = useCallback(
     (newValue: string | undefined) => {
       onChange(newValue);
