@@ -1,3 +1,40 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["prettier", "@typescript-eslint"],
+  "rules": {
+    // Prettier integration
+    "prettier/prettier": "error",
+
+    // Best Practices
+    "eqeqeq": ["error", "always"],               // Enforce strict equality
+    "curly": ["error", "all"],                   // Always use curly braces for block statements
+    "no-console": "warn",                        // Warn about console.log, useful for production
+    "no-alert": "error",                         // Disallow alert, confirm, and prompt
+    "no-unused-vars": "warn",                    // Warn when variables are declared but not used
+    "no-debugger": "error",                      // Disallow debugger statements
+
+    // Code Consistency
+    "semi": ["error", "always"],                 // Always require semicolons
+    "quotes": ["error", "single", { "avoidEscape": true }], // Enforce single quotes
+    "comma-dangle": ["error", "only-multiline"], // Enforce trailing commas only on multiline
+    "indent": ["error", 2],                      // 2-space indentation
+
+    // React/JSX Rules
+    "react/react-in-jsx-scope": "off",           // Next.js auto-imports React
+    "react/jsx-uses-react": "off",               // Same reason as above
+    "react/jsx-key": "error",                    // Ensure keys for dynamic lists
+
+    // Next.js specific rules
+    "@next/next/no-img-element": "off",          // Disable for custom <img> usage
+
+    // TypeScript specific rules
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }], // Allow unused function args starting with _
+    "@typescript-eslint/no-explicit-any": "warn",     // Warn on using 'any', to encourage better types
+    "@typescript-eslint/explicit-module-boundary-types": "off", // Disable forcing return type on functions
+    "@typescript-eslint/consistent-type-imports": "error" // Enforce consistent usage of type imports
+  }
 }

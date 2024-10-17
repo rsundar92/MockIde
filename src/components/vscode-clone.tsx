@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/select';
 import { useFileSystem } from '@/context/FileSystemContext';
 import { Worksheets } from './openWorksheets';
-import { FileSystemItem } from '@/types/type';
+import type { FileSystemItem } from '@/types/type';
 
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
   ssr: false,
@@ -28,7 +28,8 @@ const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
 const branches = ['main', 'develop', 'feature/new-ui'];
 
 export function MockIDE() {
-  const { fileSystem, isLoadingFiles, error, updateFileSystem } = useFileSystem();
+  const { fileSystem, isLoadingFiles, error, updateFileSystem } =
+    useFileSystem();
   const [openWorksheets, setOpenWorkSheets] = useState(
     Worksheets.activeWorksheets
   );
@@ -58,7 +59,9 @@ export function MockIDE() {
 
   const renderTree = useCallback(
     (files: FileSystemItem[], depth = 0, parentPath = '') => {
-      if (!files) return;
+      if (!files) {
+        return;
+      }
       const currentLevelFiles = files.filter((file: FileSystemItem) => {
         const isDirectChild =
           file.relativePath.startsWith(parentPath) &&
