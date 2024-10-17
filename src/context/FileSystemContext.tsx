@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import { FileSystemItem } from '@/types/type';
+import type { FileSystemItem } from '@/types/type';
 
 type FileSystemContextType = {
   fileSystem: { files: FileSystemItem[] };
@@ -10,12 +10,18 @@ type FileSystemContextType = {
   error: Error;
   fetchFileSystem: () => void;
   updateFileSystem: (path: string, content: string) => void;
-}
+};
 
-const FileSystemContext = createContext<FileSystemContextType | undefined>(undefined);
+const FileSystemContext = createContext<FileSystemContextType | undefined>(
+  undefined
+);
 
-export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [fileSystem, setFileSystem] = useState<{ files: FileSystemItem[] }>({ files: [] });
+export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [fileSystem, setFileSystem] = useState<{ files: FileSystemItem[] }>({
+    files: [],
+  });
   const [isLoadingFiles, setLoadingFiles] = useState(false);
   const [error, setError] = useState(null);
 
@@ -49,7 +55,15 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   }, []);
 
   return (
-    <FileSystemContext.Provider value={{ fileSystem, isLoadingFiles, error, fetchFileSystem, updateFileSystem }}>
+    <FileSystemContext.Provider
+      value={{
+        fileSystem,
+        isLoadingFiles,
+        error,
+        fetchFileSystem,
+        updateFileSystem,
+      }}
+    >
       {children}
     </FileSystemContext.Provider>
   );

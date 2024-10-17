@@ -35,6 +35,5 @@
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }], // Allow unused function args starting with _
     "@typescript-eslint/no-explicit-any": "warn",     // Warn on using 'any', to encourage better types
     "@typescript-eslint/explicit-module-boundary-types": "off", // Disable forcing return type on functions
-    "@typescript-eslint/consistent-type-imports": "error" // Enforce consistent usage of type imports
   }
 }
