@@ -38,16 +38,29 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const updateFileSystem = (path: string, content: string) => {
-    setFileSystem((prevFileSystem) => {
-      const newFileSystem = { ...prevFileSystem };
-      const pathParts = path.split('/');
-      let current = newFileSystem;
-      for (let i = 0; i < pathParts.length - 1; i++) {
-        current = current[pathParts[i]];
-      }
-      current[pathParts[pathParts.length - 1]] = content;
-      return newFileSystem;
-    });
+    // setFileSystem((prevFileSystem) => {
+    //   const newFileSystem = { ...prevFileSystem };
+    //   const pathParts = path.split('/');
+
+    //   console.log('newFileSystem', newFileSystem);
+    //   console.log('pathParts', pathParts);
+
+
+    //   let current = newFileSystem;
+    //   for (let i = 0; i < pathParts.length - 1; i++) {
+    //     // Check if current has the next part of the path
+    //     if (current[pathParts[i]] === undefined) {
+    //       console.error(`Path not found: ${pathParts[i]}`); // Log the missing path for debugging
+    //       return newFileSystem; // Return the original file system if a path is missing
+    //     }
+    //     current = current[pathParts[i]];
+    //   }
+
+    //   // Ensure the last part of the path exists before setting content
+    //   const lastPart = pathParts[pathParts.length - 1];
+    //   current[lastPart] = content; // Set the content
+    //   return newFileSystem;
+    // });
   };
 
   useEffect(() => {

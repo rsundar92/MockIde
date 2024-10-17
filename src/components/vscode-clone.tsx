@@ -1,16 +1,11 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import dynamic from 'next/dynamic';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useFileSystem } from '@/context/FileSystemContext';
 import { Worksheets } from './openWorksheets';
 import TreeView from './TreeView';
-
-const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
-  ssr: false,
-  loading: () => <p>Loading editor...</p>,
-});
+import MonacoEditorComponent from './MonacoEditorComponent';
 
 const branches = ['main', 'develop', 'feature/new-ui'];
 
@@ -86,16 +81,8 @@ export function MockIDE() {
         </div>
         <div className="flex-1">
           {selectedFile ? (
-            <MonacoEditor
-              height="100%"
-              theme="vs-dark"
+            <MonacoEditorComponent
               value={fileContent}
-              options={{
-                minimap: { enabled: true },
-                scrollBeyondLastLine: false,
-                fontSize: 14,
-                automaticLayout: true,
-              }}
               onChange={handleEditorChange}
             />
           ) : (
