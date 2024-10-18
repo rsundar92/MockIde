@@ -19,8 +19,15 @@ To install the project, follow these steps:
    ```bash
    git clone https://github.com/rsundar92/MockIde.git
 
+2. Navigate to the project directory:
+   ```bash
+   cd yourrepository
+   
+3. Install the dependencies:
+   ```
+   npm install
 
-First, run the development server:
+4. Run the development server:
 
 ```bash
 npm run dev
