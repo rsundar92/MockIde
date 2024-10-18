@@ -23,9 +23,9 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 In the project directory, you can run:
 
 ```bash
-npm run dev: Runs the app in development mode.
+npm run dev: `Runs the app in development mode.`
 
-npm run build: Builds the app for production.
+npm run build: `Builds the app for production.`
 
 npm run start: Starts the production server.
 
