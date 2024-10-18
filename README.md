@@ -41,6 +41,8 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * [![React][React.js]][React-url]
 * [![TypeScript][TypeScript]][TypeScript-url]
 * [![Next.js][Next.js]][Next-url]
+* [![Tailwind CSS][Tailwind CSS]][Tailwind-url]
+* [![Axios][Axios]][Axios-url]
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
@@ -50,6 +52,12 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 [Next.js]: https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white
 [Next-url]: https://nextjs.org/
+
+[Tailwind CSS]: https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white
+[Tailwind-url]: https://tailwindcss.com/
+
+[Axios]: https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white
+[Axios-url]: https://axios-http.com/
 
 
 ## Overview
