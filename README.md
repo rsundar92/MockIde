@@ -34,6 +34,15 @@ npm run lint: Runs the linter to check for code style issues.
 npm run format: Format the code as per rules in prettier.
 ```
 
+### Built With
+
+This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+
+* [![Next][Next.js]][Next-url]
+* [![React][React.js]][React-url]
+* [![TypeScript][TypeScript]][TypeScript-url]
+
+
 ## Overview
 Mock IDE is a lightweight web-based Integrated Development Environment (IDE) designed to provide essential development features within a simplified interface. The key features of the application include:
 
