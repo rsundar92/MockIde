@@ -100,8 +100,6 @@ Seamlessly view and switch between different Git branches within the project. Th
 - **File Explorer**: Navigate through the project's directory structure.
 - **Basic Editor**: View and edit files easily.
 - **Branch Management**: View and switch between Git branches.
-- **Syntax Highlighting**: Supports basic syntax highlighting for various programming languages.
-- **Dark/Light Mode**: Option to switch between themes for better visibility.
 
 ## Usage Instructions
 
