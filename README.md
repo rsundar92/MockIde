@@ -2,6 +2,24 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- **Node.js** (v18.17.0 or later) - Download from [Node.js Official Website](https://nodejs.org/)
+- **npm** (v9.x or later) - npm is included with Node.js. 
+- A code editor such as [Visual Studio Code](https://code.visualstudio.com/) for editing the project files.
+
+## Installation
+
+To install the project, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/rsundar92/MockIde.git
+
+
 First, run the development server:
 
 ```bash
