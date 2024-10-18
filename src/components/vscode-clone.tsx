@@ -18,6 +18,7 @@ export function MockIDE() {
   const [fileContent, setFileContent] = useState('');
   const [expandedFolders, setExpandedFolders] = useState<string[]>([]);
   const [currentBranch, setCurrentBranch] = useState('main');
+  const [diffMode, toggleDiffMode] = useState(false);
 
   const toggleFolder = useCallback((path: string) => {
     setExpandedFolders((prev) =>
@@ -70,6 +71,16 @@ export function MockIDE() {
           </Select>
         )}
       </div>
+      <button
+        onClick={() => toggleDiffMode(!diffMode)}
+        className={`px-4 py-2 rounded-md font-semibold transition duration-300 ${
+          diffMode
+            ? 'bg-red-500 text-white hover:bg-red-600'
+            : 'bg-blue-500 text-white hover:bg-blue-600'
+        }`}
+      >
+        {diffMode ? 'Switch to Editor' : 'Show Diff'}
+      </button>
       <div className="flex flex-1 overflow-hidden">
         <div className="w-64 border-r border-gray-200 overflow-auto">
           <div className="p-4">
@@ -99,6 +110,7 @@ export function MockIDE() {
               onChange={handleEditorChange}
               selectedFile={selectedFile}
               openworksheets={activeWorksheets}
+              diffMode={diffMode}
             />
           ) : (
             <div className="flex items-center justify-center h-full text-gray-500">
