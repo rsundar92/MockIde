@@ -25,3 +25,10 @@ export type Worksheet = {
     warehouse: string;
     content: string;
 };
+
+/* eslint-disable no-unused-vars */
+export enum Branch {
+    Main = 'main',
+    Dev = 'dev',
+    Testing = 'testing',
+}

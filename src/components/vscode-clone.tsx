@@ -9,6 +9,7 @@ import { useBranches } from '@/context/BranchesContext';
 import { useOpenWorksheets } from '@/context/OpenWorksheets';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { Branch } from '@/types/type';
 
 export function MockIDE() {
   const { fileSystem, isLoadingFiles, error, updateFileSystem } = useFileSystem();
@@ -17,7 +18,7 @@ export function MockIDE() {
   const [selectedFile, setSelectedFile] = useState('');
   const [fileContent, setFileContent] = useState('');
   const [expandedFolders, setExpandedFolders] = useState<string[]>([]);
-  const [currentBranch, setCurrentBranch] = useState('main');
+  const [currentBranch, setCurrentBranch] = useState<Branch>(Branch.Dev);
   const [diffMode, toggleDiffMode] = useState(false);
 
   const toggleFolder = useCallback((path: string) => {
@@ -57,7 +58,9 @@ export function MockIDE() {
         {isLoadingFiles ? (
           <Skeleton height={40} width={'100%'} />
         ) : (
-          <Select value={currentBranch} onValueChange={setCurrentBranch}>
+          <Select value={currentBranch}
+            onValueChange={(value: string) => setCurrentBranch(value as Branch)}
+          >
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
