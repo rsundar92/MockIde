@@ -22,17 +22,11 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 In the project directory, you can run:
 
-```bash
-npm run dev: `Runs the app in development mode.`
-
-npm run build: `Builds the app for production.`
-
-npm run start: Starts the production server.
-
-npm run lint: Runs the linter to check for code style issues.
-
-npm run format: Format the code as per rules in prettier.
-```
+- **`npm run dev`**: Runs the app in development mode.
+- **`npm run build`**: Builds the app for production.
+- **`npm run start`**: Starts the production server.
+- **`npm run lint`**: Runs the linter to check for code style issues.
+- **`npm run format`**: Formats the code as per rules in Prettier.
 
 ### Built With
 
