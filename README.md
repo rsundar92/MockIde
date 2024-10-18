@@ -20,6 +20,15 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+##Available Scripts
+
+In the project directory, you can run:
+
+npm run dev: Runs the app in development mode.
+npm run build: Builds the app for production.
+npm run start: Starts the production server.
+npm run lint: Runs the linter to check for code style issues.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
