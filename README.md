@@ -54,6 +54,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * [![TypeScript][TypeScript]][TypeScript-url]
 * [![Next.js][Next.js]][Next-url]
 * [![Tailwind CSS][Tailwind CSS]][Tailwind-url]
+* [![@monaco-editor/react][@monaco-editor/react]][@monaco-editor/react-url]
 * [![Axios][Axios]][Axios-url]
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
@@ -70,6 +71,9 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 [Axios]: https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white
 [Axios-url]: https://axios-http.com/
+
+[@monaco-editor/react]: https://img.shields.io/badge/@monaco--editor/react-2A2D34?style=for-the-badge&logo=monacoeditor&logoColor=white
+[@monaco-editor/react-url]: https://github.com/suren-atoyan/monaco-react
 
 
 ## Overview
