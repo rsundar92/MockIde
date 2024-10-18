@@ -54,7 +54,7 @@ export function MockIDE() {
     <div className="flex flex-col h-screen bg-white">
       <div className="p-4 border-b border-gray-200">
         {isLoadingFiles ? (
-          <Skeleton height={40} width={200} />
+          <Skeleton height={40} width={'100%'} />
         ) : (
           <Select value={currentBranch} onValueChange={setCurrentBranch}>
             <SelectTrigger className="w-full">
@@ -89,7 +89,9 @@ export function MockIDE() {
         <div className="flex-1">
           {isLoadingFiles ? (
             <div className="p-4">
-              <Skeleton height="100%" />
+              {Array.from({ length: 10 }, (_, index) => (
+                <Skeleton key={index} height="100%" />
+              ))}
             </div>
           ) : selectedFile ? (
             <MonacoEditorComponent
