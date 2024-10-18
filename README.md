@@ -21,7 +21,7 @@ To install the project, follow these steps:
 
 2. Navigate to the project directory:
    ```bash
-   cd yourrepository
+   cd MockIde
    
 3. Install the dependencies:
    ```
@@ -94,6 +94,21 @@ Provides a simple yet functional text editor for opening and modifying file cont
 
 Branch Management:
 Seamlessly view and switch between different Git branches within the project. This allows users to track work across multiple branches and switch between them as needed.
+
+## Features
+
+- **File Explorer**: Navigate through the project's directory structure.
+- **Basic Editor**: View and edit files easily.
+- **Branch Management**: View and switch between Git branches.
+- **Syntax Highlighting**: Supports basic syntax highlighting for various programming languages.
+- **Dark/Light Mode**: Option to switch between themes for better visibility.
+
+## Usage Instructions
+
+1. After running the development server, open your browser and go to `http://localhost:3000`.
+2. Use the **File Explorer** on the left to navigate through your project files.
+3. Click on any file to open it in the editor. Make your changes and save them.
+4. Use the **Branch Management** feature to view and switch between branches as needed.
 
 
 ## Learn More
