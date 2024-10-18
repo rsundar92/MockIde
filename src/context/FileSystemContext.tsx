@@ -12,9 +12,7 @@ type FileSystemContextType = {
   updateFileSystem: () => void;
 };
 
-const FileSystemContext = createContext<FileSystemContextType | undefined>(
-  undefined
-);
+const FileSystemContext = createContext<FileSystemContextType | undefined>(undefined);
 
 export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -28,6 +26,8 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetchFileSystem = async () => {
     setLoadingFiles(true);
     try {
+      // Simulate the 1500 ms API delay with setTimeout
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       const response = await axios.get('/list-files.json');
       setFileSystem(response?.data?.data);
     } catch (error) {
