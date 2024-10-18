@@ -38,6 +38,16 @@ npm run format: Format the code as per rules in prettier.
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
+* [![React][React.js]][React-url]
+* [![TypeScript][TypeScript]][TypeScript-url]
+
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+
+[TypeScript]: https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white
+[TypeScript-url]: https://www.typescriptlang.org/
+
+
 * [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
 
