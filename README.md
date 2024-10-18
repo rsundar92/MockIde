@@ -40,6 +40,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 * [![React][React.js]][React-url]
 * [![TypeScript][TypeScript]][TypeScript-url]
+* [![Next.js][Next.js]][Next-url]
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
@@ -47,9 +48,8 @@ This section should list any major frameworks/libraries used to bootstrap your p
 [TypeScript]: https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white
 [TypeScript-url]: https://www.typescriptlang.org/
 
-
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
+[Next.js]: https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white
+[Next-url]: https://nextjs.org/
 
 
 ## Overview
