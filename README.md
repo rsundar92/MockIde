@@ -28,7 +28,7 @@ npm run dev: Runs the app in development mode.
 npm run build: Builds the app for production.
 npm run start: Starts the production server.
 npm run lint: Runs the linter to check for code style issues.
-npm run format: Format the code as per rules in prettier
+npm run format: Format the code as per rules in prettier.
 
 ## Learn More
 
