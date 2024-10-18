@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import { FileSystemProvider } from '@/context/FileSystemContext';
+import { BranchesProvider } from '@/context/BranchesContext';
+import { OpenWorksheetsProvider } from '@/context/OpenWorksheets';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -29,7 +31,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <FileSystemProvider>{children}</FileSystemProvider>
+        <FileSystemProvider>
+          <OpenWorksheetsProvider>
+            <BranchesProvider>
+              {children}
+            </BranchesProvider>
+          </OpenWorksheetsProvider>
+        </FileSystemProvider>
       </body>
     </html>
   );

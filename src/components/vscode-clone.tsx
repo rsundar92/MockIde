@@ -3,15 +3,15 @@
 import React, { useState, useCallback } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useFileSystem } from '@/context/FileSystemContext';
-import { Worksheets } from './openWorksheets';
 import TreeView from './TreeView';
 import MonacoEditorComponent from './MonacoEditorComponent';
-
-const branches = ['main', 'develop', 'feature/new-ui'];
+import { useBranches } from '@/context/BranchesContext';
+import { useOpenWorksheets } from '@/context/OpenWorksheets';
 
 export function MockIDE() {
   const { fileSystem, isLoadingFiles, error, updateFileSystem } = useFileSystem();
-  const [openWorksheets, setOpenWorkSheets] = useState(Worksheets.activeWorksheets);
+  const {localBranches} = useBranches();
+  const {activeWorksheets} = useOpenWorksheets();
   const [selectedFile, setSelectedFile] = useState('');
   const [fileContent, setFileContent] = useState('');
   const [expandedFolders, setExpandedFolders] = useState<string[]>([]);
@@ -24,20 +24,19 @@ export function MockIDE() {
   }, []);
 
   const selectFile = useCallback((path: string, content: string) => {
-    const worksheet = openWorksheets.find(
+    const worksheet = activeWorksheets.find(
       (worksheet) => worksheet.relativePath === path
     );
     setSelectedFile(path);
     setFileContent(
       worksheet?.content || worksheet?.editorContent || worksheet?.modifiedContent || content
     );
-  }, [openWorksheets]);
+  }, [activeWorksheets]);
 
   const handleEditorChange = useCallback(
     (value: string | undefined) => {
       if (value !== undefined && selectedFile) {
         setFileContent(value);
-        // updateFileSystem(selectedFile, value);
         updateFileSystem();
       }
     },
@@ -60,7 +59,7 @@ export function MockIDE() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {branches.map((branch) => (
+            {localBranches.map((branch) => (
               <SelectItem key={branch} value={branch}>
                 {branch}
               </SelectItem>
@@ -86,7 +85,7 @@ export function MockIDE() {
               value={fileContent}
               onChange={handleEditorChange}
               selectedFile={selectedFile}
-              openworksheets={openWorksheets}
+              openworksheets={activeWorksheets}
             />
           ) : (
             <div className="flex items-center justify-center h-full text-gray-500">
