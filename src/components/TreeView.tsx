@@ -8,7 +8,7 @@ type TreeViewProps = {
   files: FileSystemItem[];
   expandedFolders: string[];
   toggleFolder: (path: string) => void;
-  selectedFile: string;
+  selectedFile: string | null;
   selectFile: (path: string, content: string) => void;
 };
 

@@ -70,9 +70,6 @@ const MonacoEditorComponent: React.FC<MonacoEditorProps> = ({
 
   return (
     <>
-      <div className="p-2 bg-gray-900 text-white font-semibold">
-          {selectedFile}
-      </div>
       {diffMode ? (
         <MonacoDiffEditor
           height="100%"

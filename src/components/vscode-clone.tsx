@@ -18,11 +18,11 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { Branch } from '@/types/type';
 
 export function MockIDE() {
-  const { fileSystem, isLoadingFiles, error, updateFileSystem } =
-    useFileSystem();
+  const { fileSystem, isLoadingFiles, error, updateFileSystem } = useFileSystem();
   const { currentBranch, setBranch, localBranches } = useBranches();
   const { activeWorksheets } = useOpenWorksheets();
-  const [selectedFile, setSelectedFile] = useState('');
+  const [openFiles, setOpenFiles] = useState<{ path: string; content: string }[]>([]); // Stack of open files
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState('');
   const [expandedFolders, setExpandedFolders] = useState<string[]>([]);
   const [diffMode, toggleDiffMode] = useState(false);
@@ -35,19 +35,34 @@ export function MockIDE() {
 
   const selectFile = useCallback(
     (path: string, content: string) => {
-      const worksheet = activeWorksheets.find(
-        (worksheet) => worksheet.relativePath === path
-      );
-      setSelectedFile(path);
-      setFileContent(
-        worksheet?.content ||
-          worksheet?.editorContent ||
-          worksheet?.modifiedContent ||
-          content
-      );
+      const worksheet = activeWorksheets.find((worksheet) => worksheet.relativePath === path);
+      const existingFile = openFiles.find((file) => file.path === path);
+      if (existingFile) {
+        // If already open, switch to it
+        setSelectedFile(existingFile.path);
+        setFileContent(existingFile.content);
+      } else {
+        // Add to open files stack
+        const newFile = {
+          path,
+          content: worksheet?.content || worksheet?.editorContent || worksheet?.modifiedContent || content,
+        };
+        setOpenFiles((prev) => [...prev, newFile]);
+        setSelectedFile(newFile.path);
+        setFileContent(newFile.content);
+      }
     },
-    [activeWorksheets]
+    [activeWorksheets, openFiles]
   );
+
+  const closeFile = useCallback((path: string) => {
+    setOpenFiles((prev) => prev.filter((file) => file.path !== path));
+    if (selectedFile === path) {
+      const nextFile = openFiles.find((file) => file.path !== path);
+      setSelectedFile(nextFile ? nextFile.path : null);
+      setFileContent(nextFile ? nextFile.content : '');
+    }
+  }, [openFiles, selectedFile]);
 
   const handleEditorChange = useCallback(
     (value: string | undefined) => {
@@ -61,7 +76,8 @@ export function MockIDE() {
 
   useEffect(() => {
     if (currentBranch) {
-      setSelectedFile('');
+      setSelectedFile(null);
+      setOpenFiles([]); // Clear open files on branch change
       updateFileSystem();
     }
   }, [currentBranch, updateFileSystem]);
@@ -114,11 +130,7 @@ export function MockIDE() {
         >
           <div className="p-4">
             {isLoadingFiles ? (
-              <Skeleton
-                count={5}
-                height={20}
-                style={{ marginBottom: '10px' }}
-              />
+              <Skeleton count={5} height={20} style={{ marginBottom: '10px' }} />
             ) : (
               <TreeView
                 files={fileSystem.files}
@@ -133,6 +145,33 @@ export function MockIDE() {
 
         {/* Monaco Editor Section */}
         <div className="flex-1 overflow-auto h-full">
+          {openFiles.length > 0 &&
+            <div className="flex space-x-2 p-2 bg-gray-800 text-white">
+              {openFiles.map((file) => (
+                <div key={file.path} className="flex items-center">
+                  <div
+                    className={`px-2 py-1 rounded cursor-pointer ${
+                      selectedFile === file.path ? 'bg-gray-700' : 'hover:bg-gray-600'
+                    }`}
+                    onClick={() => {
+                      setSelectedFile(file.path);
+                      setFileContent(file.content);
+                    }}
+                  >
+                    {file.path.split('/').pop()} {/* Display file name only */}
+                  </div>
+                  <button
+                    onClick={() => closeFile(file.path)}
+                    className="ml-1 text-gray-400 hover:text-white"
+                    aria-label="Close file"
+                  >
+                    &times; {/* Close icon (×) */}
+                  </button>
+                </div>
+              ))}
+            </div> 
+          }
+
           {isLoadingFiles ? (
             <div className="p-4">
               {Array.from({ length: 10 }, (_, index) => (
