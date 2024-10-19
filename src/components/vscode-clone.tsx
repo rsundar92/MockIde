@@ -129,9 +129,8 @@ export function MockIDE() {
                 ))}
                 <Button
                     onClick={() => toggleDiffMode(!diffMode)}
-                    className={`px-4 py-2 rounded-md font-semibold transition duration-300 ${
-                        diffMode ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-blue-500 text-white hover:bg-blue-600'
-                    }`}
+                    className={'text-black'}
+                    variant={'outline'}
                 >
                     {diffMode ? 'Switch to Editor' : 'Show Diff'}
                 </Button>
