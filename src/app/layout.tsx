@@ -33,9 +33,7 @@ export default function RootLayout({
       >
         <BranchesProvider>
           <FileSystemProvider>
-            <OpenWorksheetsProvider>
-              {children}
-            </OpenWorksheetsProvider>
+            <OpenWorksheetsProvider>{children}</OpenWorksheetsProvider>
           </FileSystemProvider>
         </BranchesProvider>
       </body>

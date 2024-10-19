@@ -13,7 +13,9 @@ type BranchesContextType = {
   setBranch: (branch: Branch) => void;
 };
 
-const BranchesContext = createContext<BranchesContextType | undefined>(undefined);
+const BranchesContext = createContext<BranchesContextType | undefined>(
+  undefined
+);
 
 export const BranchesProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

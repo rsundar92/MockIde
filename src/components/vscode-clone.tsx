@@ -1,7 +1,13 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useFileSystem } from '@/context/FileSystemContext';
 import TreeView from './TreeView';
 import MonacoEditorComponent from './MonacoEditorComponent';
@@ -12,7 +18,8 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { Branch } from '@/types/type';
 
 export function MockIDE() {
-  const { fileSystem, isLoadingFiles, error, updateFileSystem } = useFileSystem();
+  const { fileSystem, isLoadingFiles, error, updateFileSystem } =
+    useFileSystem();
   const { currentBranch, setBranch, localBranches } = useBranches();
   const { activeWorksheets } = useOpenWorksheets();
   const [selectedFile, setSelectedFile] = useState('');
@@ -28,10 +35,15 @@ export function MockIDE() {
 
   const selectFile = useCallback(
     (path: string, content: string) => {
-      const worksheet = activeWorksheets.find((worksheet) => worksheet.relativePath === path);
+      const worksheet = activeWorksheets.find(
+        (worksheet) => worksheet.relativePath === path
+      );
       setSelectedFile(path);
       setFileContent(
-        worksheet?.content || worksheet?.editorContent || worksheet?.modifiedContent || content
+        worksheet?.content ||
+          worksheet?.editorContent ||
+          worksheet?.modifiedContent ||
+          content
       );
     },
     [activeWorksheets]
@@ -64,7 +76,10 @@ export function MockIDE() {
         {isLoadingFiles ? (
           <Skeleton height={40} width={'100%'} />
         ) : (
-          <Select value={currentBranch} onValueChange={(value: string) => setBranch(value as Branch)}>
+          <Select
+            value={currentBranch}
+            onValueChange={(value: string) => setBranch(value as Branch)}
+          >
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
@@ -99,7 +114,11 @@ export function MockIDE() {
         >
           <div className="p-4">
             {isLoadingFiles ? (
-              <Skeleton count={5} height={20} style={{ marginBottom: '10px' }} />
+              <Skeleton
+                count={5}
+                height={20}
+                style={{ marginBottom: '10px' }}
+              />
             ) : (
               <TreeView
                 files={fileSystem.files}

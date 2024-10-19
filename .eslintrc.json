@@ -1,28 +1,25 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "next/typescript"
-  ],
+  "extends": ["next/core-web-vitals", "next/typescript"],
   "plugins": ["prettier", "@typescript-eslint"],
   "rules": {
     // Best Practices
-    "eqeqeq": ["error", "always"],               // Enforce strict equality
-    "curly": ["error", "all"],                   // Always use curly braces for block statements
-    "no-console": "warn",                        // Warn about console.log, useful for production
-    "no-alert": "error",                         // Disallow alert, confirm, and prompt
-    "no-unused-vars": "warn",                    // Warn when variables are declared but not used
-    "no-debugger": "error",                      // Disallow debugger statements
+    "eqeqeq": ["error", "always"], // Enforce strict equality
+    "curly": ["error", "all"], // Always use curly braces for block statements
+    "no-console": "warn", // Warn about console.log, useful for production
+    "no-alert": "error", // Disallow alert, confirm, and prompt
+    "no-unused-vars": "warn", // Warn when variables are declared but not used
+    "no-debugger": "error", // Disallow debugger statements
 
     // Code Consistency
-    "semi": ["error", "always"],                 // Always require semicolons
+    "semi": ["error", "always"], // Always require semicolons
     "quotes": ["error", "single", { "avoidEscape": true }], // Enforce single quotes
     "comma-dangle": ["error", "only-multiline"], // Enforce trailing commas only on multiline
-    "indent": ["error", 2],                      // 2-space indentation
+    // "indent": ["error", 2], // 2-space indentation
 
     // React/JSX Rules
-    "react/react-in-jsx-scope": "off",           // Next.js auto-imports React
-    "react/jsx-uses-react": "off",               // Same reason as above
-    "react/jsx-key": "error",                    // Ensure keys for dynamic lists
+    "react/react-in-jsx-scope": "off", // Next.js auto-imports React
+    "react/jsx-uses-react": "off", // Same reason as above
+    "react/jsx-key": "error", // Ensure keys for dynamic lists
 
     // Next.js specific rules
     "@next/next/no-img-element": "off"

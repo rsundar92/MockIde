@@ -13,7 +13,9 @@ type FileSystemContextType = {
   updateFileSystem: () => void;
 };
 
-const FileSystemContext = createContext<FileSystemContextType | undefined>(undefined);
+const FileSystemContext = createContext<FileSystemContextType | undefined>(
+  undefined
+);
 
 export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -23,7 +25,7 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
   });
   const [isLoadingFiles, setLoadingFiles] = useState(false);
   const [error, setError] = useState<Error | string | null>(null);
-  const {currentBranch} = useBranches();
+  const { currentBranch } = useBranches();
 
   const fetchFileSystem = async () => {
     setLoadingFiles(true);

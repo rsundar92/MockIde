@@ -10,7 +10,7 @@ type TreeViewProps = {
   toggleFolder: (path: string) => void;
   selectedFile: string;
   selectFile: (path: string, content: string) => void;
-}
+};
 
 const TreeView: React.FC<TreeViewProps> = ({
   files,
@@ -33,8 +33,10 @@ const TreeView: React.FC<TreeViewProps> = ({
       });
 
       return currentLevelFiles.map((file: FileSystemItem) => {
-        const hasChildren = files.some((f: FileSystemItem) =>
-          f.relativePath.startsWith(`${file.relativePath}/`) && f.depth === depth + 1
+        const hasChildren = files.some(
+          (f: FileSystemItem) =>
+            f.relativePath.startsWith(`${file.relativePath}/`) &&
+            f.depth === depth + 1
         );
 
         if (file.pathType === 'directory') {

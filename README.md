@@ -2,13 +2,12 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
 
 - **Node.js** (v18.17.0 or later) - Download from [Node.js Official Website](https://nodejs.org/)
-- **npm** (v9.x or later) - npm is included with Node.js. 
+- **npm** (v9.x or later) - npm is included with Node.js.
 - A code editor such as [Visual Studio Code](https://code.visualstudio.com/) for editing the project files.
 
 ## Installation
@@ -16,16 +15,23 @@ Before you begin, ensure you have met the following requirements:
 To install the project, follow these steps:
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/rsundar92/MockIde.git
+
+   ```
 
 2. Navigate to the project directory:
    ```bash
    cd MockIde
-   
+
+   ```
 3. Install the dependencies:
+
    ```
    npm install
+
+   ```
 
 4. Run the development server:
 
@@ -57,33 +63,28 @@ In the project directory, you can run:
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-* [![React][React.js]][React-url]
-* [![TypeScript][TypeScript]][TypeScript-url]
-* [![Next.js][Next.js]][Next-url]
-* [![Tailwind CSS][Tailwind CSS]][Tailwind-url]
-* [![@monaco-editor/react][@monaco-editor/react]][@monaco-editor/react-url]
-* [![Axios][Axios]][Axios-url]
+- [![React][React.js]][React-url]
+- [![TypeScript][TypeScript]][TypeScript-url]
+- [![Next.js][Next.js]][Next-url]
+- [![Tailwind CSS][Tailwind CSS]][Tailwind-url]
+- [![@monaco-editor/react][@monaco-editor/react]][@monaco-editor/react-url]
+- [![Axios][Axios]][Axios-url]
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-
 [TypeScript]: https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white
 [TypeScript-url]: https://www.typescriptlang.org/
-
 [Next.js]: https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white
 [Next-url]: https://nextjs.org/
-
 [Tailwind CSS]: https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white
 [Tailwind-url]: https://tailwindcss.com/
-
 [Axios]: https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white
 [Axios-url]: https://axios-http.com/
-
 [@monaco-editor/react]: https://img.shields.io/badge/@monaco--editor/react-2A2D34?style=for-the-badge&logo=monacoeditor&logoColor=white
 [@monaco-editor/react-url]: https://github.com/suren-atoyan/monaco-react
 
-
 ## Overview
+
 Mock IDE is a lightweight web-based Integrated Development Environment (IDE) designed to provide essential development features within a simplified interface. The key features of the application include:
 
 File Explorer with Tree Structure:
@@ -107,7 +108,6 @@ Seamlessly view and switch between different Git branches within the project. Th
 2. Use the **File Explorer** on the left to navigate through your project files.
 3. Click on any file to open it in the editor. Make your changes and save them.
 4. Use the **Branch Management** feature to view and switch between branches as needed.
-
 
 ## Learn More
 

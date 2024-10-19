@@ -1,6 +1,12 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import axios from 'axios';
 import type { Worksheet } from '@/types/type';
 import { useBranches } from './BranchesContext';
@@ -13,11 +19,13 @@ type OpenWorksheetsContextType = {
   updateWorksheets: () => void;
 };
 
-const OpenWorksheetsContext = createContext<OpenWorksheetsContextType | undefined>(undefined);
+const OpenWorksheetsContext = createContext<
+  OpenWorksheetsContextType | undefined
+>(undefined);
 
-export const OpenWorksheetsProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const OpenWorksheetsProvider: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
   const [activeWorksheets, setActiveWorksheets] = useState<Worksheet[]>([]);
   const [isLoadingWorksheets, setLoadingWorksheets] = useState(false);
   const [error, setError] = useState<Error | string | null>(null);
@@ -37,7 +45,7 @@ export const OpenWorksheetsProvider: React.FC<{ children: React.ReactNode }> = (
     } finally {
       setLoadingWorksheets(false);
     }
-  }, [currentBranch]); 
+  }, [currentBranch]);
 
   const updateWorksheets = () => {
     // Logic to update the worksheets if necessary
@@ -65,7 +73,9 @@ export const OpenWorksheetsProvider: React.FC<{ children: React.ReactNode }> = (
 export const useOpenWorksheets = () => {
   const context = useContext(OpenWorksheetsContext);
   if (!context) {
-    throw new Error('useOpenWorksheets must be used within an OpenWorksheetsProvider');
+    throw new Error(
+      'useOpenWorksheets must be used within an OpenWorksheetsProvider'
+    );
   }
   return context;
 };
