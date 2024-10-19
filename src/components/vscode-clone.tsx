@@ -20,7 +20,7 @@ import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
 import 'react-reflex/styles.css';
 
 export function MockIDE() {
-  const { fileSystem, isLoadingFiles, error, updateFileSystem } = useFileSystem();
+  const { fileSystem, isLoadingFiles, updateFileSystem } = useFileSystem();
   const { currentBranch, setBranch, localBranches } = useBranches();
   const { activeWorksheets } = useOpenWorksheets();
   const [openFiles, setOpenFiles] = useState<{ path: string; content: string }[]>([]); // Stack of open files
@@ -84,9 +84,9 @@ export function MockIDE() {
     }
   }, [currentBranch, updateFileSystem]);
 
-  if (error) {
-    return <div>Error loading files!</div>;
-  }
+  // if (error) {
+  //   return <div>Error loading files!</div>;
+  // }
 
   return (
     <div className="flex flex-col h-screen bg-white">
@@ -125,9 +125,9 @@ export function MockIDE() {
         </div>
       </div>
 
-      <ReflexContainer orientation="vertical">
+      <ReflexContainer orientation="vertical" className='bg-gray-900 text-white'>
         <ReflexElement minSize={200} flex={0.25}>
-          <div className="overflow-auto">
+          <div className="">
             <div className="p-4">
               {isLoadingFiles ? (
                 <Skeleton count={5} height={20} style={{ marginBottom: '10px' }} />
@@ -147,7 +147,7 @@ export function MockIDE() {
         <ReflexSplitter />
 
         <ReflexElement flex={0.75}>
-          <div className="flex-1 overflow-auto h-full">
+          <div className="flex-1 h-full">
             {openFiles.length > 0 &&
               <div className="flex space-x-2 p-2 bg-gray-800 text-white">
                 {openFiles.map((file) => (

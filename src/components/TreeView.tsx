@@ -43,7 +43,7 @@ const TreeView: React.FC<TreeViewProps> = ({
           return (
             <div key={file.relativePath}>
               <div
-                className="flex items-center cursor-pointer hover:bg-gray-100 py-1"
+                className="flex items-center cursor-pointer hover:bg-gray-800 py-1"
                 onClick={() => toggleFolder(file.relativePath)}
               >
                 {expandedFolders.includes(file.relativePath) ? (
@@ -65,8 +65,8 @@ const TreeView: React.FC<TreeViewProps> = ({
           return (
             <div
               key={file.relativePath}
-              className={`flex items-center cursor-pointer hover:bg-gray-100 py-1 ${
-                selectedFile === file.relativePath ? 'bg-blue-100' : ''
+              className={`flex items-center cursor-pointer hover:bg-gray-800 py-1 ${
+                selectedFile === file.relativePath ? 'bg-gray-700' : ''
               }`}
               onClick={() => selectFile(file.relativePath, file.name || '')}
             >
