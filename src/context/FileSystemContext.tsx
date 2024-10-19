@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import type { FileSystemItem } from '@/types/type';
 import { useBranches } from './BranchesContext';
+import { toast } from 'react-toastify';
 
 type FileSystemContextType = {
   fileSystem: { files: FileSystemItem[] };
@@ -35,7 +36,9 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
       const response = await axios.get('/list-files.json');
       setFileSystem(response?.data?.data);
     } catch (error) {
+      const errorMessage = (error as Error).message || 'An error occurred while fetching file system.';
       setError(error as unknown as Error | null | string);
+      toast.error(errorMessage);
     } finally {
       setLoadingFiles(false);
     }

@@ -10,6 +10,7 @@ import React, {
 import axios from 'axios';
 import type { Worksheet } from '@/types/type';
 import { useBranches } from './BranchesContext';
+import { toast } from 'react-toastify';
 
 type OpenWorksheetsContextType = {
   activeWorksheets: Worksheet[];
@@ -41,7 +42,9 @@ export const OpenWorksheetsProvider: React.FC<{
       );
       setActiveWorksheets(filteredWorksheets);
     } catch (error) {
+      const errorMessage = (error as Error).message || 'An error occurred while fetching file system.';
       setError(error as unknown as Error | null | string);
+      toast.error(errorMessage);
     } finally {
       setLoadingWorksheets(false);
     }

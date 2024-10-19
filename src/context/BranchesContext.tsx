@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Branch } from '@/types/type';
+import { toast } from 'react-toastify';
 
 type BranchesContextType = {
   currentBranch: string;
@@ -33,7 +34,9 @@ export const BranchesProvider: React.FC<{ children: React.ReactNode }> = ({
       setCurrentBranch(data?.currentBranch || '');
       setLocalBranches(data?.localBranches || []);
     } catch (error) {
+      const errorMessage = (error as Error).message || 'An error occurred while fetching branches.';
       setError(error as unknown as Error | null | string);
+      toast.error(errorMessage);
     } finally {
       setLoadingBranches(false);
     }
