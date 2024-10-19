@@ -1,33 +1,26 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { useFileSystem } from '@/context/FileSystemContext';
 import TreeView from './TreeView';
 import MonacoEditorComponent from './MonacoEditorComponent';
-import { useBranches } from '@/context/BranchesContext';
 import { useOpenWorksheets } from '@/context/OpenWorksheetContext';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import { Branch } from '@/types/type';
 import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
+import { IDEHeader } from './IDEHeader';
 import 'react-reflex/styles.css';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { useBranches } from '@/context/BranchesContext';
+import Skeleton from 'react-loading-skeleton';
 
 export function MockIDE() {
   const { fileSystem, isLoadingFiles, updateFileSystem } = useFileSystem();
-  const { currentBranch, setBranch, localBranches } = useBranches();
   const { activeWorksheets } = useOpenWorksheets();
-  const [openFiles, setOpenFiles] = useState<{ path: string; content: string }[]>([]); // Stack of open files
+  const [openFiles, setOpenFiles] = useState<{ path: string; content: string }[]>([]);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState('');
   const [expandedFolders, setExpandedFolders] = useState<string[]>([]);
   const [diffMode, toggleDiffMode] = useState(false);
+  const {currentBranch} = useBranches();
 
   const toggleFolder = useCallback((path: string) => {
     setExpandedFolders((prev) =>
@@ -86,57 +79,22 @@ export function MockIDE() {
 
   return (
     <div className="flex flex-col h-screen bg-white">
-      <div className="p-4 border-b border-gray-200">
-        {isLoadingFiles ? (
-          <Skeleton height={40} width={'100%'} />
-        ) : (
-          <Select
-            value={currentBranch}
-            onValueChange={(value: string) => setBranch(value as Branch)}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {localBranches.map((branch) => (
-                <SelectItem key={branch} value={branch}>
-                  {branch}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )}
+      <IDEHeader />
 
-        <div className="p-4 pb-0">
-          <button
-            onClick={() => toggleDiffMode(!diffMode)}
-            className={`px-4 py-2 rounded-md font-semibold transition duration-300 ${
-              diffMode
-                ? 'bg-red-500 text-white hover:bg-red-600'
-                : 'bg-blue-500 text-white hover:bg-blue-600'
-            }`}
-          >
-            {diffMode ? 'Switch to Editor' : 'Show Diff'}
-          </button>
-        </div>
-      </div>
-
-      <ReflexContainer orientation="vertical" className='bg-gray-900 text-white'>
+      <ReflexContainer orientation="vertical" className="bg-gray-900 text-white">
         <ReflexElement minSize={200} flex={0.25}>
-          <div className="">
-            <div className="p-4">
-              {isLoadingFiles ? (
-                <Skeleton count={5} height={20} style={{ marginBottom: '10px' }} />
-              ) : (
-                <TreeView
-                  files={fileSystem.files}
-                  expandedFolders={expandedFolders}
-                  toggleFolder={toggleFolder}
-                  selectedFile={selectedFile}
-                  selectFile={selectFile}
-                />
-              )}
-            </div>
+          <div className="p-4">
+            {isLoadingFiles ? (
+              <Skeleton count={5} height={20} style={{ marginBottom: '10px' }} />
+            ) : (
+              <TreeView
+                files={fileSystem.files}
+                expandedFolders={expandedFolders}
+                toggleFolder={toggleFolder}
+                selectedFile={selectedFile}
+                selectFile={selectFile}
+              />
+            )}
           </div>
         </ReflexElement>
 
@@ -144,7 +102,7 @@ export function MockIDE() {
 
         <ReflexElement flex={0.75}>
           <div className="flex-1 h-full">
-            {openFiles.length > 0 &&
+            {openFiles.length > 0 && (
               <div className="flex space-x-2 p-2 bg-gray-800 text-white">
                 {openFiles.map((file) => (
                   <div key={file.path} className="flex items-center">
@@ -168,8 +126,16 @@ export function MockIDE() {
                     </button>
                   </div>
                 ))}
+                <button
+                    onClick={() => toggleDiffMode(!diffMode)}
+                    className={`px-4 py-2 rounded-md font-semibold transition duration-300 ${
+                        diffMode ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-blue-500 text-white hover:bg-blue-600'
+                    }`}
+                >
+                    {diffMode ? 'Switch to Editor' : 'Show Diff'}
+                </button>
               </div>
-            }
+            )}
 
             {isLoadingFiles ? (
               <div className="p-4">
