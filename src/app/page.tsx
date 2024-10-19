@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home() {
   return (
-    <div className="">
+    <div>
       <ErrorBoundary>
         <MockIDE />
       </ErrorBoundary>

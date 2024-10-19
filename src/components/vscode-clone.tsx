@@ -84,10 +84,6 @@ export function MockIDE() {
     }
   }, [currentBranch, updateFileSystem]);
 
-  // if (error) {
-  //   return <div>Error loading files!</div>;
-  // }
-
   return (
     <div className="flex flex-col h-screen bg-white">
       <div className="p-4 border-b border-gray-200">
