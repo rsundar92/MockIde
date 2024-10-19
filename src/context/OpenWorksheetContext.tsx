@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import type { Worksheet } from '@/types/type';
 import { useBranches } from './BranchesContext';
@@ -22,13 +22,18 @@ export const OpenWorksheetsProvider: React.FC<{ children: React.ReactNode }> = (
   const [isLoadingWorksheets, setLoadingWorksheets] = useState(false);
   const [error, setError] = useState<Error | string | null>(null);
   const { currentBranch } = useBranches();
+  console.log('sdasd', currentBranch);
 
-  const fetchWorksheets = async () => {
+  const fetchWorksheets = useCallback(async () => {
     setLoadingWorksheets(true);
     try {
       const response = await axios.get('/open-worksheets.json');
       console.log(response.data.activeWorksheets);
-      const filteredWorksheets = response.data.activeWorksheets.filter((ws: Worksheet) => ws.branch === currentBranch);
+
+      // Filter worksheets based on the currentBranch
+      const filteredWorksheets = response.data.activeWorksheets.filter(
+        (ws: Worksheet) => ws.branch === currentBranch
+      );
       console.log('filteredWorksheets', filteredWorksheets);
       setActiveWorksheets(filteredWorksheets);
     } catch (error) {
@@ -36,7 +41,7 @@ export const OpenWorksheetsProvider: React.FC<{ children: React.ReactNode }> = (
     } finally {
       setLoadingWorksheets(false);
     }
-  };
+  }, [currentBranch]); 
 
   const updateWorksheets = () => {
     // Logic to update the worksheets if necessary
@@ -44,7 +49,7 @@ export const OpenWorksheetsProvider: React.FC<{ children: React.ReactNode }> = (
 
   useEffect(() => {
     fetchWorksheets();
-  }, []);
+  }, [fetchWorksheets]);
 
   return (
     <OpenWorksheetsContext.Provider

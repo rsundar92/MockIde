@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useFileSystem } from '@/context/FileSystemContext';
 import TreeView from './TreeView';
 import MonacoEditorComponent from './MonacoEditorComponent';
 import { useBranches } from '@/context/BranchesContext';
-import { useOpenWorksheets } from '@/context/OpenWorksheets';
+import { useOpenWorksheets } from '@/context/OpenWorksheetContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { Branch } from '@/types/type';
@@ -46,6 +46,13 @@ export function MockIDE() {
     },
     [selectedFile, updateFileSystem]
   );
+
+  useEffect(() => {
+    if (currentBranch) {
+      setSelectedFile('');
+      updateFileSystem();
+    }
+  }, [currentBranch, updateFileSystem]);
 
   if (error) {
     return <div>Error loading files!</div>;

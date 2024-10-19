@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { FileSystemProvider } from '@/context/FileSystemContext';
 import { BranchesProvider } from '@/context/BranchesContext';
-import { OpenWorksheetsProvider } from '@/context/OpenWorksheets';
+import { OpenWorksheetsProvider } from '@/context/OpenWorksheetContext';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
