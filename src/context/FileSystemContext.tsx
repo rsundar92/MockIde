@@ -14,9 +14,7 @@ type FileSystemContextType = {
   updateFileSystem: () => void;
 };
 
-const FileSystemContext = createContext<FileSystemContextType | undefined>(
-  undefined
-);
+const FileSystemContext = createContext<FileSystemContextType | null>(null);
 
 export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

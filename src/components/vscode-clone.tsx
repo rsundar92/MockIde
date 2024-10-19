@@ -16,6 +16,8 @@ import { useOpenWorksheets } from '@/context/OpenWorksheetContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { Branch } from '@/types/type';
+import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
+import 'react-reflex/styles.css';
 
 export function MockIDE() {
   const { fileSystem, isLoadingFiles, error, updateFileSystem } = useFileSystem();
@@ -77,7 +79,7 @@ export function MockIDE() {
   useEffect(() => {
     if (currentBranch) {
       setSelectedFile(null);
-      setOpenFiles([]); // Clear open files on branch change
+      setOpenFiles([]);
       updateFileSystem();
     }
   }, [currentBranch, updateFileSystem]);
@@ -123,76 +125,78 @@ export function MockIDE() {
         </div>
       </div>
 
-      <div className="flex-1 flex overflow-hidden">
-        <div
-          className="border-r border-gray-200 overflow-auto"
-          style={{ width: '100%', maxWidth: '20rem' }}
-        >
-          <div className="p-4">
+      <ReflexContainer orientation="vertical">
+        <ReflexElement minSize={200} flex={0.25}>
+          <div className="overflow-auto">
+            <div className="p-4">
+              {isLoadingFiles ? (
+                <Skeleton count={5} height={20} style={{ marginBottom: '10px' }} />
+              ) : (
+                <TreeView
+                  files={fileSystem.files}
+                  expandedFolders={expandedFolders}
+                  toggleFolder={toggleFolder}
+                  selectedFile={selectedFile}
+                  selectFile={selectFile}
+                />
+              )}
+            </div>
+          </div>
+        </ReflexElement>
+
+        <ReflexSplitter />
+
+        <ReflexElement flex={0.75}>
+          <div className="flex-1 overflow-auto h-full">
+            {openFiles.length > 0 &&
+              <div className="flex space-x-2 p-2 bg-gray-800 text-white">
+                {openFiles.map((file) => (
+                  <div key={file.path} className="flex items-center">
+                    <div
+                      className={`px-2 py-1 rounded cursor-pointer ${
+                        selectedFile === file.path ? 'bg-gray-700' : 'hover:bg-gray-600'
+                      }`}
+                      onClick={() => {
+                        setSelectedFile(file.path);
+                        setFileContent(file.content);
+                      }}
+                    >
+                      {file.path.split('/').pop()}
+                    </div>
+                    <button
+                      onClick={() => closeFile(file.path)}
+                      className="ml-1 text-gray-400 hover:text-white"
+                      aria-label="Close file"
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+              </div>
+            }
+
             {isLoadingFiles ? (
-              <Skeleton count={5} height={20} style={{ marginBottom: '10px' }} />
-            ) : (
-              <TreeView
-                files={fileSystem.files}
-                expandedFolders={expandedFolders}
-                toggleFolder={toggleFolder}
+              <div className="p-4">
+                {Array.from({ length: 10 }, (_, index) => (
+                  <Skeleton key={index} height="100%" />
+                ))}
+              </div>
+            ) : selectedFile ? (
+              <MonacoEditorComponent
+                value={fileContent}
+                onChange={handleEditorChange}
                 selectedFile={selectedFile}
-                selectFile={selectFile}
+                openworksheets={activeWorksheets}
+                diffMode={diffMode}
               />
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-500">
+                Select a file to view its content
+              </div>
             )}
           </div>
-        </div>
-
-        {/* Monaco Editor Section */}
-        <div className="flex-1 overflow-auto h-full">
-          {openFiles.length > 0 &&
-            <div className="flex space-x-2 p-2 bg-gray-800 text-white">
-              {openFiles.map((file) => (
-                <div key={file.path} className="flex items-center">
-                  <div
-                    className={`px-2 py-1 rounded cursor-pointer ${
-                      selectedFile === file.path ? 'bg-gray-700' : 'hover:bg-gray-600'
-                    }`}
-                    onClick={() => {
-                      setSelectedFile(file.path);
-                      setFileContent(file.content);
-                    }}
-                  >
-                    {file.path.split('/').pop()} {/* Display file name only */}
-                  </div>
-                  <button
-                    onClick={() => closeFile(file.path)}
-                    className="ml-1 text-gray-400 hover:text-white"
-                    aria-label="Close file"
-                  >
-                    &times; {/* Close icon (×) */}
-                  </button>
-                </div>
-              ))}
-            </div> 
-          }
-
-          {isLoadingFiles ? (
-            <div className="p-4">
-              {Array.from({ length: 10 }, (_, index) => (
-                <Skeleton key={index} height="100%" />
-              ))}
-            </div>
-          ) : selectedFile ? (
-            <MonacoEditorComponent
-              value={fileContent}
-              onChange={handleEditorChange}
-              selectedFile={selectedFile}
-              openworksheets={activeWorksheets}
-              diffMode={diffMode}
-            />
-          ) : (
-            <div className="flex items-center justify-center h-full text-gray-500">
-              Select a file to view its content
-            </div>
-          )}
-        </div>
-      </div>
+        </ReflexElement>
+      </ReflexContainer>
     </div>
   );
 }
