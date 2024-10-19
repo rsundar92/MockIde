@@ -2,15 +2,15 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { Branch } from '@/types/type';
 
 type BranchesContextType = {
   currentBranch: string;
   localBranches: string[];
-//   remoteBranches: string[];
   isLoadingBranches: boolean;
   error: Error | string | null;
   fetchBranches: () => void;
-  updateBranches: () => void;
+  setBranch: (branch: Branch) => void;
 };
 
 const BranchesContext = createContext<BranchesContextType | undefined>(undefined);
@@ -18,9 +18,8 @@ const BranchesContext = createContext<BranchesContextType | undefined>(undefined
 export const BranchesProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [currentBranch, setCurrentBranch] = useState<string>('');
+  const [currentBranch, setCurrentBranch] = useState<Branch>(Branch.Dev);
   const [localBranches, setLocalBranches] = useState<string[]>([]);
-  //   const [remoteBranches, setRemoteBranches] = useState<string[]>([]);
   const [isLoadingBranches, setLoadingBranches] = useState(false);
   const [error, setError] = useState<Error | string | null>(null);
 
@@ -31,7 +30,6 @@ export const BranchesProvider: React.FC<{ children: React.ReactNode }> = ({
       const data = response?.data?.data;
       setCurrentBranch(data?.currentBranch || '');
       setLocalBranches(data?.localBranches || []);
-    //   setRemoteBranches(data?.remoteBranches || []);
     } catch (error) {
       setError(error as unknown as Error | null | string);
     } finally {
@@ -39,8 +37,8 @@ export const BranchesProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const updateBranches = () => {
-    // Implement your logic to update branches if needed
+  const setBranch = (branch: Branch) => {
+    setCurrentBranch(branch);
   };
 
   useEffect(() => {
@@ -52,11 +50,10 @@ export const BranchesProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         currentBranch,
         localBranches,
-        // remoteBranches,
         isLoadingBranches,
         error,
         fetchBranches,
-        updateBranches,
+        setBranch,
       }}
     >
       {children}

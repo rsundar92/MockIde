@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import type { FileSystemItem } from '@/types/type';
+import { useBranches } from './BranchesContext';
 
 type FileSystemContextType = {
   fileSystem: { files: FileSystemItem[] };
@@ -22,6 +23,7 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
   });
   const [isLoadingFiles, setLoadingFiles] = useState(false);
   const [error, setError] = useState<Error | string | null>(null);
+  const {currentBranch} = useBranches();
 
   const fetchFileSystem = async () => {
     setLoadingFiles(true);
@@ -41,7 +43,7 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     fetchFileSystem();
-  }, []);
+  }, [currentBranch]);
 
   return (
     <FileSystemContext.Provider

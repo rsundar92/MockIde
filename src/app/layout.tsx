@@ -31,13 +31,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <FileSystemProvider>
-          <OpenWorksheetsProvider>
-            <BranchesProvider>
+        <BranchesProvider>
+          <FileSystemProvider>
+            <OpenWorksheetsProvider>
               {children}
-            </BranchesProvider>
-          </OpenWorksheetsProvider>
-        </FileSystemProvider>
+            </OpenWorksheetsProvider>
+          </FileSystemProvider>
+        </BranchesProvider>
       </body>
     </html>
   );

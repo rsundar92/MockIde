@@ -13,12 +13,11 @@ import { Branch } from '@/types/type';
 
 export function MockIDE() {
   const { fileSystem, isLoadingFiles, error, updateFileSystem } = useFileSystem();
-  const { localBranches } = useBranches();
+  const {currentBranch, setBranch, localBranches } = useBranches();
   const { activeWorksheets } = useOpenWorksheets();
   const [selectedFile, setSelectedFile] = useState('');
   const [fileContent, setFileContent] = useState('');
   const [expandedFolders, setExpandedFolders] = useState<string[]>([]);
-  const [currentBranch, setCurrentBranch] = useState<Branch>(Branch.Dev);
   const [diffMode, toggleDiffMode] = useState(false);
 
   const toggleFolder = useCallback((path: string) => {
@@ -59,7 +58,7 @@ export function MockIDE() {
           <Skeleton height={40} width={'100%'} />
         ) : (
           <Select value={currentBranch}
-            onValueChange={(value: string) => setCurrentBranch(value as Branch)}
+            onValueChange={(value: string) => setBranch(value as Branch)}
           >
             <SelectTrigger className="w-full">
               <SelectValue />

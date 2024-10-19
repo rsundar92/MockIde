@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import type { Worksheet } from '@/types/type';
+import { useBranches } from './BranchesContext';
 
 type OpenWorksheetsContextType = {
   activeWorksheets: Worksheet[];
@@ -20,12 +21,16 @@ export const OpenWorksheetsProvider: React.FC<{ children: React.ReactNode }> = (
   const [activeWorksheets, setActiveWorksheets] = useState<Worksheet[]>([]);
   const [isLoadingWorksheets, setLoadingWorksheets] = useState(false);
   const [error, setError] = useState<Error | string | null>(null);
+  const { currentBranch } = useBranches();
 
   const fetchWorksheets = async () => {
     setLoadingWorksheets(true);
     try {
       const response = await axios.get('/open-worksheets.json');
-      setActiveWorksheets(response?.data?.activeWorksheets || []);
+      console.log(response.data.activeWorksheets);
+      const filteredWorksheets = response.data.activeWorksheets.filter((ws: Worksheet) => ws.branch === currentBranch);
+      console.log('filteredWorksheets', filteredWorksheets);
+      setActiveWorksheets(filteredWorksheets);
     } catch (error) {
       setError(error as unknown as Error | null | string);
     } finally {
