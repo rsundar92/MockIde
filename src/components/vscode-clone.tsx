@@ -11,6 +11,7 @@ import 'react-reflex/styles.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useBranches } from '@/context/BranchesContext';
 import Skeleton from 'react-loading-skeleton';
+import { Button } from './ui/button';
 
 export function MockIDE() {
   const { fileSystem, isLoadingFiles, updateFileSystem } = useFileSystem();
@@ -126,14 +127,14 @@ export function MockIDE() {
                     </button>
                   </div>
                 ))}
-                <button
+                <Button
                     onClick={() => toggleDiffMode(!diffMode)}
                     className={`px-4 py-2 rounded-md font-semibold transition duration-300 ${
                         diffMode ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-blue-500 text-white hover:bg-blue-600'
                     }`}
                 >
                     {diffMode ? 'Switch to Editor' : 'Show Diff'}
-                </button>
+                </Button>
               </div>
             )}
 
