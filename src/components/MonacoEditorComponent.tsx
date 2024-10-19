@@ -34,10 +34,35 @@ const MonacoEditorComponent: React.FC<MonacoEditorProps> = ({ value, onChange, s
     [onChange]
   );
 
+  const getLanguage = (file: string) => {
+    const extension = file.split('.').pop();
+    switch (extension) {
+    case 'js':
+      return 'javascript';
+    case 'ts':
+      return 'typescript';
+    case 'py':
+      return 'python';
+    case 'css':
+      return 'css';
+    case 'html':
+      return 'html';
+    case 'json':
+      return 'json';
+    case 'yml':
+      return 'yaml';
+    case 'sql':
+      return 'sql';
+    default:
+      return 'plaintext';
+    }
+  };
+
   return (
     <>
       {diffMode ? <MonacoDiffEditor
         height="100%"
+        language={getLanguage(selectedFile) as unknown as string}
         theme="vs-dark"
         original={currentWorksheet?.content}
         modified={currentWorksheet?.modifiedContent}
@@ -50,6 +75,7 @@ const MonacoEditorComponent: React.FC<MonacoEditorProps> = ({ value, onChange, s
         }}
       />: <MonacoEditor
         height="100%"
+        language={getLanguage(selectedFile) as unknown as string}
         theme="vs-dark"
         value={value}
         options={{

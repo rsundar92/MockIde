@@ -13,7 +13,7 @@ import { Branch } from '@/types/type';
 
 export function MockIDE() {
   const { fileSystem, isLoadingFiles, error, updateFileSystem } = useFileSystem();
-  const {currentBranch, setBranch, localBranches } = useBranches();
+  const { currentBranch, setBranch, localBranches } = useBranches();
   const { activeWorksheets } = useOpenWorksheets();
   const [selectedFile, setSelectedFile] = useState('');
   const [fileContent, setFileContent] = useState('');
@@ -64,9 +64,7 @@ export function MockIDE() {
         {isLoadingFiles ? (
           <Skeleton height={40} width={'100%'} />
         ) : (
-          <Select value={currentBranch}
-            onValueChange={(value: string) => setBranch(value as Branch)}
-          >
+          <Select value={currentBranch} onValueChange={(value: string) => setBranch(value as Branch)}>
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
@@ -79,19 +77,26 @@ export function MockIDE() {
             </SelectContent>
           </Select>
         )}
+
+        <div className="p-4 pb-0">
+          <button
+            onClick={() => toggleDiffMode(!diffMode)}
+            className={`px-4 py-2 rounded-md font-semibold transition duration-300 ${
+              diffMode
+                ? 'bg-red-500 text-white hover:bg-red-600'
+                : 'bg-blue-500 text-white hover:bg-blue-600'
+            }`}
+          >
+            {diffMode ? 'Switch to Editor' : 'Show Diff'}
+          </button>
+        </div>
       </div>
-      <button
-        onClick={() => toggleDiffMode(!diffMode)}
-        className={`px-4 py-2 rounded-md font-semibold transition duration-300 ${
-          diffMode
-            ? 'bg-red-500 text-white hover:bg-red-600'
-            : 'bg-blue-500 text-white hover:bg-blue-600'
-        }`}
-      >
-        {diffMode ? 'Switch to Editor' : 'Show Diff'}
-      </button>
-      <div className="flex flex-1 overflow-hidden">
-        <div className="w-64 border-r border-gray-200 overflow-auto">
+
+      <div className="flex-1 flex overflow-hidden">
+        <div
+          className="border-r border-gray-200 overflow-auto"
+          style={{ width: '100%', maxWidth: '20rem' }}
+        >
           <div className="p-4">
             {isLoadingFiles ? (
               <Skeleton count={5} height={20} style={{ marginBottom: '10px' }} />
@@ -106,7 +111,9 @@ export function MockIDE() {
             )}
           </div>
         </div>
-        <div className="flex-1">
+
+        {/* Monaco Editor Section */}
+        <div className="flex-1 overflow-auto h-full">
           {isLoadingFiles ? (
             <div className="p-4">
               {Array.from({ length: 10 }, (_, index) => (

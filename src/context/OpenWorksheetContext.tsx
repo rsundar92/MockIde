@@ -22,19 +22,15 @@ export const OpenWorksheetsProvider: React.FC<{ children: React.ReactNode }> = (
   const [isLoadingWorksheets, setLoadingWorksheets] = useState(false);
   const [error, setError] = useState<Error | string | null>(null);
   const { currentBranch } = useBranches();
-  console.log('sdasd', currentBranch);
 
   const fetchWorksheets = useCallback(async () => {
     setLoadingWorksheets(true);
     try {
       const response = await axios.get('/open-worksheets.json');
-      console.log(response.data.activeWorksheets);
-
       // Filter worksheets based on the currentBranch
       const filteredWorksheets = response.data.activeWorksheets.filter(
         (ws: Worksheet) => ws.branch === currentBranch
       );
-      console.log('filteredWorksheets', filteredWorksheets);
       setActiveWorksheets(filteredWorksheets);
     } catch (error) {
       setError(error as unknown as Error | null | string);
