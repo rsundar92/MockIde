@@ -3,6 +3,7 @@
 import React, { useCallback } from 'react';
 import { ChevronDown, ChevronRight, File, Folder } from 'lucide-react';
 import type { FileSystemItem } from '@/types/type';
+import { useOpenWorksheets } from '@/context/OpenWorksheetContext';
 
 type TreeViewProps = {
   files: FileSystemItem[];
@@ -19,6 +20,13 @@ const TreeView: React.FC<TreeViewProps> = ({
   selectedFile,
   selectFile,
 }) => {
+  const {activeWorksheets} = useOpenWorksheets();
+
+  const getContent = (path: string) => {
+    const existingFile = activeWorksheets.find((file) => file.relativePath === path);
+    return existingFile?.content || '';
+  };
+
   const renderTree = useCallback(
     (files: FileSystemItem[], depth = 0, parentPath = '') => {
       if (!files) {
@@ -68,7 +76,7 @@ const TreeView: React.FC<TreeViewProps> = ({
               className={`flex items-center cursor-pointer hover:bg-gray-800 py-1 ${
                 selectedFile === file.relativePath ? 'bg-gray-700' : ''
               }`}
-              onClick={() => selectFile(file.relativePath, file.name || '')}
+              onClick={() => selectFile(file.relativePath, getContent(file.relativePath))}
             >
               <File className="w-4 h-4 mr-2" />
               {file.name}

@@ -64,7 +64,7 @@ export function MockIDE() {
     (value: string | undefined) => {
       if (value !== undefined && selectedFile) {
         setFileContent(value);
-        updateFileSystem();
+        // updateFileSystem();
       }
     },
     [selectedFile, updateFileSystem]
@@ -99,7 +99,7 @@ export function MockIDE() {
           </div>
         </ReflexElement>
 
-        <ReflexSplitter />
+        <ReflexSplitter style={{'zIndex': 0}}/>
 
         <ReflexElement flex={0.75}>
         <div className="flex-1 h-full">

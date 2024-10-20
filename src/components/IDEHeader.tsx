@@ -11,7 +11,7 @@ export const IDEHeader: React.FC = () => {
   const { currentBranch, setBranch, localBranches, isLoadingBranches } = useBranches();
 
   return (
-    <div className="p-4 border-b border-gray-200">
+    <div className="p-4 border-b border-gray-200 z-[100]">
       {isLoadingBranches ? (
         <Skeleton height={40} width={'100%'} />
       ) : (

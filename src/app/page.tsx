@@ -1,5 +1,5 @@
 import ErrorBoundary from '@/components/ErrorBoundary';
-import { MockIDE } from '@/components/vscode-clone';
+import { MockIDE } from '@/components/MockIDE';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
