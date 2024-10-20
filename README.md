@@ -63,9 +63,8 @@ In the project directory, you can run:
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-- [![React][React.js]][React-url]
-- [![TypeScript][TypeScript]][TypeScript-url]
 - [![Next.js][Next.js]][Next-url]
+- [![TypeScript][TypeScript]][TypeScript-url]
 - [![Tailwind CSS][Tailwind CSS]][Tailwind-url]
 - [![@monaco-editor/react][@monaco-editor/react]][@monaco-editor/react-url]
 - [![Axios][Axios]][Axios-url]
