@@ -20,77 +20,72 @@ const TreeView: React.FC<TreeViewProps> = ({
   selectedFile,
   selectFile,
 }) => {
-  const {activeWorksheets} = useOpenWorksheets();
+  const { activeWorksheets } = useOpenWorksheets();
 
   const getContent = (path: string) => {
     const existingFile = activeWorksheets.find((file) => file.relativePath === path);
     return existingFile?.content || '';
   };
 
-  const renderTree = useCallback(
-    (files: FileSystemItem[], depth = 0, parentPath = '') => {
-      if (!files) {
-        return null;
-      }
-      const currentLevelFiles = files.filter((file: FileSystemItem) => {
-        const isDirectChild =
-          file.relativePath.startsWith(parentPath) &&
-          file.depth === depth &&
-          !file.relativePath.slice(parentPath.length + 1).includes('/'); // Ensure no deeper subdirectory
-        return isDirectChild;
-      });
+  return (
+    <div>
+      {files
+        .filter((file: FileSystemItem) => file.depth === 0)
+          .map((file: FileSystemItem) => {
+            const renderTreeRecursively = (parent: FileSystemItem, depth = 0) => {
+              const childFiles = files.filter(
+                (f: FileSystemItem) =>
+                  f.relativePath.startsWith(`${parent.relativePath}/`) &&
+                  f.depth === depth + 1 &&
+                  !f.relativePath.slice(parent.relativePath.length + 1).includes('/')
+              );
 
-      return currentLevelFiles.map((file: FileSystemItem) => {
-        const hasChildren = files.some(
-          (f: FileSystemItem) =>
-            f.relativePath.startsWith(`${file.relativePath}/`) &&
-            f.depth === depth + 1
-        );
+              return (
+                <div key={parent.relativePath}>
+                  {parent.pathType === 'directory' && (
+                    <>
+                      <div
+                        className="flex items-center cursor-pointer hover:bg-gray-800 py-1"
+                        onClick={() => toggleFolder(parent.relativePath)}
+                      >
+                        {expandedFolders.includes(parent.relativePath) ? (
+                          <ChevronDown className="w-4 h-4 mr-1" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4 mr-1" />
+                        )}
+                        <Folder className="w-4 h-4 mr-2" />
+                        {parent.name}
+                      </div>
+                      {expandedFolders.includes(parent.relativePath) && (
+                        <div className="ml-4">
+                          {childFiles.map((child) => renderTreeRecursively(child, depth + 1))}
+                        </div>
+                      )}
+                    </>
+                  )}
 
-        if (file.pathType === 'directory') {
-          return (
-            <div key={file.relativePath}>
-              <div
-                className="flex items-center cursor-pointer hover:bg-gray-800 py-1"
-                onClick={() => toggleFolder(file.relativePath)}
-              >
-                {expandedFolders.includes(file.relativePath) ? (
-                  <ChevronDown className="w-4 h-4 mr-1" />
-                ) : (
-                  <ChevronRight className="w-4 h-4 mr-1" />
-                )}
-                <Folder className="w-4 h-4 mr-2" />
-                {file.name}
-              </div>
-              {expandedFolders.includes(file.relativePath) && hasChildren && (
-                <div className="ml-4">
-                  {renderTree(files, depth + 1, file.relativePath)}
+                  {parent.pathType === 'file' && (
+                    <div
+                      key={parent.relativePath}
+                      className={`flex items-center cursor-pointer hover:bg-gray-800 py-1 ${
+                        selectedFile === parent.relativePath ? 'bg-gray-700' : ''
+                      }`}
+                      onClick={() =>
+                        selectFile(parent.relativePath, getContent(parent.relativePath))
+                      }
+                    >
+                      <File className="w-4 h-4 mr-2" />
+                      {parent.name}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          );
-        } else if (file.pathType === 'file') {
-          return (
-            <div
-              key={file.relativePath}
-              className={`flex items-center cursor-pointer hover:bg-gray-800 py-1 ${
-                selectedFile === file.relativePath ? 'bg-gray-700' : ''
-              }`}
-              onClick={() => selectFile(file.relativePath, getContent(file.relativePath))}
-            >
-              <File className="w-4 h-4 mr-2" />
-              {file.name}
-            </div>
-          );
-        }
+              );
+            };
 
-        return null;
-      });
-    },
-    [expandedFolders, selectedFile, toggleFolder, selectFile]
+            return renderTreeRecursively(file);
+          })}
+    </div>
   );
-
-  return <div>{renderTree(files)}</div>;
 };
 
 export default TreeView;
