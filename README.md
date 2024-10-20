@@ -105,7 +105,7 @@ Seamlessly view and switch between different Git branches within the project. Th
 
 1. After running the development server, open your browser and go to `http://localhost:3000`.
 2. Use the **File Explorer** on the left to navigate through your project files.
-3. Click on any file to open it in the editor. Make your changes and save them.
+3. Click on any file to open it in the editor and view the content.
 4. Use the **Branch Management** feature to view and switch between branches as needed.
 
 ## Learn More
