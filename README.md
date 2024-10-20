@@ -85,6 +85,8 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 ## Overview
 
+![image](https://github.com/user-attachments/assets/840b7a49-0ca1-4b1e-854c-3ccf288de907)
+
 Mock IDE is a lightweight web-based Integrated Development Environment (IDE) designed to provide essential development features within a simplified interface. The key features of the application include:
 
 File Explorer with Tree Structure:
