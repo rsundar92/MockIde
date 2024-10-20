@@ -61,8 +61,6 @@ In the project directory, you can run:
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
 - [![Next.js][Next.js]][Next-url]
 - [![TypeScript][TypeScript]][TypeScript-url]
 - [![Tailwind CSS][Tailwind CSS]][Tailwind-url]
