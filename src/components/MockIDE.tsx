@@ -15,7 +15,7 @@ import { Button } from './ui/button';
 
 export function MockIDE() {
   const { fileSystem, isLoadingFiles, updateFileSystem } = useFileSystem();
-  const { activeWorksheets } = useOpenWorksheets();
+  const { activeWorksheets, updateWorksheets } = useOpenWorksheets();
   const [openFiles, setOpenFiles] = useState<{ path: string; content: string }[]>([]);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState('');
@@ -36,7 +36,11 @@ export function MockIDE() {
       if (existingFile) {
         // If already open, switch to it
         setSelectedFile(existingFile.path);
-        setFileContent(existingFile.content);
+        if (worksheet?.relativePath === path) {
+          setFileContent(worksheet.content);
+        } else {
+          setFileContent(existingFile.content);
+        }
       } else {
         // Add to open files stack
         const newFile = {
@@ -64,7 +68,7 @@ export function MockIDE() {
     (value: string | undefined) => {
       if (value !== undefined && selectedFile) {
         setFileContent(value);
-        // updateFileSystem();
+        updateWorksheets(selectedFile, value)
       }
     },
     [selectedFile, updateFileSystem]

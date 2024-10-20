@@ -17,7 +17,7 @@ type OpenWorksheetsContextType = {
   isLoadingWorksheets: boolean;
   error: Error | string | null;
   fetchWorksheets: () => void;
-  updateWorksheets: () => void;
+  updateWorksheets: (path: string, content: string) => void;
 };
 
 const OpenWorksheetsContext = createContext<
@@ -50,8 +50,14 @@ export const OpenWorksheetsProvider: React.FC<{
     }
   }, [currentBranch]);
 
-  const updateWorksheets = () => {
-    // Logic to update the worksheets if necessary
+  const updateWorksheets = (path: string, updatedContent: string) => {
+    setActiveWorksheets((prevWorksheets) =>
+      prevWorksheets.map((worksheet) =>
+        worksheet.relativePath === path
+          ? { ...worksheet, content: updatedContent }
+          : worksheet
+      )
+    );
   };
 
   useEffect(() => {
