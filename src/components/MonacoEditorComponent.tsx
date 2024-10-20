@@ -81,7 +81,6 @@ const MonacoEditorComponent: React.FC<MonacoEditorProps> = ({
             renderSideBySide: true,
             renderIndicators: true,
             enableSplitViewResizing: true,
-            automaticLayout: true,
             fontSize: 14,
           }}
         />
@@ -93,9 +92,7 @@ const MonacoEditorComponent: React.FC<MonacoEditorProps> = ({
           value={value}
           options={{
             minimap: { enabled: true },
-            scrollBeyondLastLine: false,
             fontSize: 14,
-            automaticLayout: true,
           }}
           onChange={handleEditorChange}
         />

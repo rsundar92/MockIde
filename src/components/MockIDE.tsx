@@ -102,68 +102,71 @@ export function MockIDE() {
         <ReflexSplitter style={{'zIndex': 0}}/>
 
         <ReflexElement flex={0.75}>
-        <div className="flex-1 h-full">
-          {openFiles.length > 0 && (
-            <div className="flex items-center justify-between p-2 bg-gray-800 text-white">
-              <div className="flex space-x-2">
-                {openFiles.map((file) => (
-                  <div key={file.path} className="flex items-center">
-                    <div
-                      className={`px-2 py-1 rounded cursor-pointer ${
-                        selectedFile === file.path ? 'bg-gray-700' : 'hover:bg-gray-600'
-                      }`}
-                      onClick={() => {
-                        setSelectedFile(file.path);
-                        setFileContent(file.content);
-                      }}
-                    >
-                      {file.path.split('/').pop()}
+          <div className="flex-1 h-full overflow-hidden">
+            {openFiles.length > 0 && (
+              <div className="flex items-center justify-between p-2 bg-gray-800 text-white">
+                <div className="flex space-x-2">
+                  {openFiles.map((file) => (
+                    <div key={file.path} className="flex items-center">
+                      <div
+                        className={`px-2 py-1 rounded cursor-pointer ${
+                          selectedFile === file.path ? 'bg-gray-700' : 'hover:bg-gray-600'
+                        }`}
+                        onClick={() => {
+                          setSelectedFile(file.path);
+                          setFileContent(file.content);
+                        }}
+                      >
+                        {file.path.split('/').pop()}
+                      </div>
+                      <button
+                        onClick={() => closeFile(file.path)}
+                        className="ml-1 text-gray-400 hover:text-white"
+                        aria-label="Close file"
+                      >
+                        &times;
+                      </button>
                     </div>
-                    <button
-                      onClick={() => closeFile(file.path)}
-                      className="ml-1 text-gray-400 hover:text-white"
-                      aria-label="Close file"
-                    >
-                      &times;
-                    </button>
-                  </div>
+                  ))}
+                </div>
+
+                {/* Aligning the button to the right */}
+                <div className="ml-auto">
+                  <Button
+                    onClick={() => toggleDiffMode(!diffMode)}
+                    className={'text-black'}
+                    variant={'outline'}
+                  >
+                    {diffMode ? 'Switch to Editor' : 'Show Diff'}
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {isLoadingFiles ? (
+              <div className="p-4">
+                {Array.from({ length: 10 }, (_, index) => (
+                  <Skeleton key={index} height="100%" />
                 ))}
               </div>
-
-              {/* Aligning the button to the right */}
-              <div className="ml-auto">
-                <Button
-                  onClick={() => toggleDiffMode(!diffMode)}
-                  className={'text-black'}
-                  variant={'outline'}
-                >
-                  {diffMode ? 'Switch to Editor' : 'Show Diff'}
-                </Button>
+            ) : selectedFile ? (
+              <div className="h-full flex flex-col">
+                <div className="flex-1">
+                  <MonacoEditorComponent
+                    value={fileContent}
+                    onChange={handleEditorChange}
+                    selectedFile={selectedFile}
+                    openworksheets={activeWorksheets}
+                    diffMode={diffMode}
+                  />
+                </div>
               </div>
-            </div>
-          )}
-
-          {isLoadingFiles ? (
-            <div className="p-4">
-              {Array.from({ length: 10 }, (_, index) => (
-                <Skeleton key={index} height="100%" />
-              ))}
-            </div>
-          ) : selectedFile ? (
-            <MonacoEditorComponent
-              value={fileContent}
-              onChange={handleEditorChange}
-              selectedFile={selectedFile}
-              openworksheets={activeWorksheets}
-              diffMode={diffMode}
-            />
-          ) : (
-            <div className="flex items-center justify-center h-full text-gray-500">
-              Select a file to view its content
-            </div>
-          )}
-        </div>
-
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-500">
+                Select a file to view its content
+              </div>
+            )}
+          </div>
         </ReflexElement>
       </ReflexContainer>
     </div>
